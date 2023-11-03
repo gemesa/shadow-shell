@@ -5,9 +5,9 @@
 .text
 
 main:
-    mov $message, %rdi
+    mov $message, %rdi  ; arg0 - const char *string
     call puts
-    xor %eax, %eax
+    xor %eax, %eax      ; set return value to 0
     ret
 
 message:

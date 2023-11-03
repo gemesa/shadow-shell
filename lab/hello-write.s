@@ -8,12 +8,12 @@ message:
 
 _start:
 
-    mov $1, %rax
-    mov $1, %rdi
-    mov $message, %rsi
-    mov $6, %rdx
+    mov $1, %rax        ; syscall NR - write: 1
+    mov $1, %rdi        ; arg0 - unsigned int fd - standard output: 1
+    mov $message, %rsi  ; arg1 - const char *buf
+    mov $6, %rdx        ; arg2 - size_t count
     syscall
 
-    mov $60, %rax
-    xor %rdi, %rdi
+    mov $60, %rax       ; syscall NR - exit: 60
+    xor %rdi, %rdi      ; arg0 - int error_code
     syscall
