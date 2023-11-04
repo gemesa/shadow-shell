@@ -4,10 +4,10 @@ BUILDDIR = build
 
 build:
 	mkdir -p $(BUILDDIR)
-	gcc lab/hello-puts.s -o $(BUILDDIR)/hello-puts
+	gcc lab/crt-hello.s -o $(BUILDDIR)/crt-hello
 
-	as lab/hello-write.s -o $(BUILDDIR)/hello-write.o
-	ld $(BUILDDIR)/hello-write.o -o $(BUILDDIR)/hello-write
+	as lab/nocrt-hello.s -o $(BUILDDIR)/nocrt-hello.o
+	ld $(BUILDDIR)/nocrt-hello.o -o $(BUILDDIR)/nocrt-hello
 
 clean:
 	rm -rf $(BUILDDIR)
