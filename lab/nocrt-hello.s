@@ -1,11 +1,6 @@
 .global _start
 
-.data
-
-message:
-	.ascii "Hello\n"
-
-	.text
+.text
 
 _start:
 
@@ -18,3 +13,6 @@ _start:
 	mov $60, %rax       # syscall NR - exit: 60
 	xor %rdi, %rdi      # arg0 - int error_code
 	syscall
+
+message:
+	.ascii "Hello\n"
