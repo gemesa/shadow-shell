@@ -6,6 +6,8 @@ build:
 	mkdir -p $(BUILDDIR)
 	gcc lab/crt-hello.s -o $(BUILDDIR)/crt-hello
 
+	gcc lab/crt-stack.s -o $(BUILDDIR)/crt-stack
+
 	as lab/nocrt-hello.s -o $(BUILDDIR)/nocrt-hello.o
 	ld $(BUILDDIR)/nocrt-hello.o -o $(BUILDDIR)/nocrt-hello
 
