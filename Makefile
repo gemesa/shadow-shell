@@ -12,5 +12,8 @@ build:
 	as lab/nocrt-jmp-func.s -o $(BUILDDIR)/nocrt-jmp-func.o
 	ld $(BUILDDIR)/nocrt-jmp-func.o -o $(BUILDDIR)/nocrt-jmp-func
 
+	as lab/nocrt-call-func.s -o $(BUILDDIR)/nocrt-call-func.o
+	ld $(BUILDDIR)/nocrt-call-func.o -o $(BUILDDIR)/nocrt-call-func
+
 clean:
 	rm -rf $(BUILDDIR)
