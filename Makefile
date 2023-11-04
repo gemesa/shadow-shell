@@ -9,5 +9,8 @@ build:
 	as lab/nocrt-hello.s -o $(BUILDDIR)/nocrt-hello.o
 	ld $(BUILDDIR)/nocrt-hello.o -o $(BUILDDIR)/nocrt-hello
 
+	as lab/nocrt-jmp-func.s -o $(BUILDDIR)/nocrt-jmp-func.o
+	ld $(BUILDDIR)/nocrt-jmp-func.o -o $(BUILDDIR)/nocrt-jmp-func
+
 clean:
 	rm -rf $(BUILDDIR)
