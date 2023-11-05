@@ -25,7 +25,7 @@ min:
 
 below:
 	mov %edi, %eax
-    
+
 	mov %rbp, %rsp
 	pop %rbp
 	ret
