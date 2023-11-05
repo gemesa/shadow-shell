@@ -10,3 +10,4 @@
 - https://cs.lmu.edu/~ray/notes/gasexamples/
 - https://web.stanford.edu/class/cs107/guide/x86-64.html
 - http://unixwiz.net/techtips/x86-jumps.html
+- https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
