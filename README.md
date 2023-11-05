@@ -9,3 +9,4 @@
 - https://www.ibm.com/docs/en/i/7.5?topic=extensions-standard-c-library-functions-table-by-name
 - https://cs.lmu.edu/~ray/notes/gasexamples/
 - https://web.stanford.edu/class/cs107/guide/x86-64.html
+- http://unixwiz.net/techtips/x86-jumps.html
