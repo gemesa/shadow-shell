@@ -17,5 +17,7 @@ build:
 	as lab/nocrt-call-func.s -o $(BUILDDIR)/nocrt-call-func.o
 	ld $(BUILDDIR)/nocrt-call-func.o -o $(BUILDDIR)/nocrt-call-func
 
+	gcc lab/crt-cmp.s -o $(BUILDDIR)/crt-cmp
+
 clean:
 	rm -rf $(BUILDDIR)
