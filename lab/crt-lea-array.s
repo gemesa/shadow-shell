@@ -11,10 +11,11 @@ main:
 	movl $0, -4(%rbp) # index
 
 loop:
-	mov  $format, %rdi
+	lea  format(%rip), %rdi
 	movl -4(%rbp), %esi
 	lea  array(, %rsi, 4), %rdx
 	mov  (%rdx), %rdx
+	xor  %eax, %eax
 	call printf
 	cmpl $3, -4(%rbp) # array length is 4
 	je   end
@@ -28,7 +29,7 @@ end:
 	ret
 
 format:
-	.ascii "%d:%d\n"
+	.asciz "%d:%d\n"
 
 array:
 	.long 11, 22, 33, 44
