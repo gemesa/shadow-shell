@@ -21,9 +21,7 @@ build:
 
 	gcc lab/crt-loop.s -o $(BUILDDIR)/crt-loop
 
-	gcc lab/crt-lea.s -o $(BUILDDIR)/crt-lea
-
-	gcc lab/crt-array.s -o $(BUILDDIR)/crt-array
+	gcc lab/crt-lea-array.s -o $(BUILDDIR)/crt-lea-array
 
 clean:
 	rm -rf $(BUILDDIR)
