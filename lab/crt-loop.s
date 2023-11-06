@@ -21,7 +21,7 @@ loop_start:
 loop_end:
 	mov %rbp, %rsp
 	pop %rbp
-    xor %eax, %eax
+	xor %eax, %eax
 	ret
 
 message:
