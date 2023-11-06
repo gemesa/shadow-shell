@@ -15,7 +15,7 @@ loop:
 	movl -4(%rbp), %esi
 	lea  array(, %rsi, 4), %rdx
 	mov  (%rdx), %rdx
-	xor  %eax, %eax
+	xor  %eax, %eax   # we dont pass any parameters in a vector register --> set %al to 0
 	call printf
 	cmpl $3, -4(%rbp) # array length is 4
 	je   end
