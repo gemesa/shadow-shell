@@ -12,3 +12,4 @@
 - http://unixwiz.net/techtips/x86-jumps.html
 - https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
 - https://stackoverflow.com/questions/38335212/calling-printf-in-x86-64-using-gnu-assembler
+- https://github.com/reg1reg1/Shellcode
