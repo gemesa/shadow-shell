@@ -1,27 +1,44 @@
 BUILDDIR = build
 
-.PHONY: build clean
+$(shell mkdir -p $(BUILDDIR))
 
-build:
-	mkdir -p $(BUILDDIR)
-	gcc lab/crt-hello.s -g -o $(BUILDDIR)/crt-hello
+.PHONY: all clean
 
-	gcc lab/crt-stack.s -g -o $(BUILDDIR)/crt-stack
+all: $(BUILDDIR)/crt-hello \
+$(BUILDDIR)/crt-stack \
+$(BUILDDIR)/nocrt-hello \
+$(BUILDDIR)/nocrt-jmp-func \
+$(BUILDDIR)/nocrt-call-func \
+$(BUILDDIR)/crt-cmp \
+$(BUILDDIR)/crt-loop \
+$(BUILDDIR)/crt-lea-array
 
-	as lab/nocrt-hello.s -g -o $(BUILDDIR)/nocrt-hello.o
-	ld $(BUILDDIR)/nocrt-hello.o -g -o $(BUILDDIR)/nocrt-hello
+$(BUILDDIR)/crt-hello: lab/crt-hello.s
+	gcc $< -g -o $@
 
-	as lab/nocrt-jmp-func.s -g -o $(BUILDDIR)/nocrt-jmp-func.o
-	ld $(BUILDDIR)/nocrt-jmp-func.o -g -o $(BUILDDIR)/nocrt-jmp-func
+$(BUILDDIR)/crt-stack: lab/crt-stack.s
+	gcc $< -g -o $@
 
-	as lab/nocrt-call-func.s -g -o $(BUILDDIR)/nocrt-call-func.o
-	ld $(BUILDDIR)/nocrt-call-func.o -g -o $(BUILDDIR)/nocrt-call-func
+$(BUILDDIR)/nocrt-hello: lab/nocrt-hello.s
+	as $< -g -o $(BUILDDIR)/nocrt-hello.o
+	ld $(BUILDDIR)/nocrt-hello.o -g -o $@
 
-	gcc lab/crt-cmp.s -g -o $(BUILDDIR)/crt-cmp
+$(BUILDDIR)/nocrt-jmp-func: lab/nocrt-jmp-func.s
+	as $< -g -o $(BUILDDIR)/nocrt-jmp-func.o
+	ld $(BUILDDIR)/nocrt-jmp-func.o -g -o $@
 
-	gcc lab/crt-loop.s -g -o $(BUILDDIR)/crt-loop
+$(BUILDDIR)/nocrt-call-func: lab/nocrt-call-func.s
+	as $< -g -o $(BUILDDIR)/nocrt-call-func.o
+	ld $(BUILDDIR)/nocrt-call-func.o -g -o $@
 
-	gcc lab/crt-lea-array.s -g -o $(BUILDDIR)/crt-lea-array
+$(BUILDDIR)/crt-cmp: lab/crt-cmp.s
+	gcc $< -g -o $@
+
+$(BUILDDIR)/crt-loop: lab/crt-loop.s
+	gcc $< -g -o $@
+
+$(BUILDDIR)/crt-lea-array: lab/crt-lea-array.s
+	gcc $< -g -o $@
 
 clean:
 	rm -rf $(BUILDDIR)
