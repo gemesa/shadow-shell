@@ -9,6 +9,7 @@ $(BUILDDIR)/crt-stack \
 $(BUILDDIR)/nocrt-hello \
 $(BUILDDIR)/nocrt-jmp-func \
 $(BUILDDIR)/nocrt-call-func \
+$(BUILDDIR)/nocrt-rep \
 $(BUILDDIR)/crt-cmp \
 $(BUILDDIR)/crt-loop \
 $(BUILDDIR)/crt-lea-array
@@ -30,6 +31,10 @@ $(BUILDDIR)/nocrt-jmp-func: lab/nocrt-jmp-func.s
 $(BUILDDIR)/nocrt-call-func: lab/nocrt-call-func.s
 	as $< -g -o $(BUILDDIR)/nocrt-call-func.o
 	ld $(BUILDDIR)/nocrt-call-func.o -g -o $@
+
+$(BUILDDIR)/nocrt-rep: lab/nocrt-rep.s
+	as $< -g -o $(BUILDDIR)/nocrt-rep.o
+	ld $(BUILDDIR)/nocrt-rep.o -g -o $@
 
 $(BUILDDIR)/crt-cmp: lab/crt-cmp.s
 	gcc $< -g -o $@
