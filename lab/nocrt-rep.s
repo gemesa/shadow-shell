@@ -5,7 +5,12 @@
 
 .text
 
-_start:
+message:
+	.asciz "Hello\n"
+
+.att_syntax
+
+_start_:
 	movl $message, %esi # src
 	movl $buffer, %edi  # dst
 	movl $6, %ecx       # sizeof message
@@ -21,5 +26,20 @@ _start:
 	xor %rdi, %rdi      # arg0 - int error_code
 	syscall
 
-message:
-	.asciz "Hello\n"
+.intel_syntax noprefix
+
+_start:
+	mov esi, offset message
+	mov edi, offset buffer
+	mov ecx, 6
+	rep  movsb
+
+	mov rax, 1
+	mov rdi, 1
+	mov rsi, offset buffer
+	mov rdx, 6
+	syscall
+
+	mov rax, 60
+	xor rdi, rdi
+	syscall
