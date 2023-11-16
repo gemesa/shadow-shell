@@ -2,7 +2,12 @@
 
 .text
 
-_start:
+message:
+	.asciz "Hello\n"
+
+.att_syntax
+
+_start_:
 
 	mov $1, %rax        # syscall NR - write: 1
 	mov $1, %rdi        # arg0 - unsigned int fd - stdout: 1
@@ -14,5 +19,16 @@ _start:
 	xor %rdi, %rdi      # arg0 - int error_code
 	syscall
 
-message:
-	.ascii "Hello\n"
+.intel_syntax noprefix
+
+_start:
+
+	mov rax, 1
+	mov rdi, 1
+	lea rsi, [rip + message] # equivalent: mov rsi, offset message
+	mov rdx, 6
+	syscall
+
+	mov rax, 60
+	xor rdi, rdi
+	syscall
