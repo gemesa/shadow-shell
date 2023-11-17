@@ -4,11 +4,21 @@
 
 .text
 
-main:
+message:
+	.asciz "Hello\n"
+
+.att_syntax
+
+main_:
 	mov  $message, %rdi  # arg0 - const char *string
 	call puts
 	xor  %eax, %eax      # set return value to 0
 	ret
 
-message:
-	.asciz "Hello\n"
+.intel_syntax noprefix
+
+main:
+	mov  rdi, offset message
+	call puts
+	xor  eax, eax
+	ret
