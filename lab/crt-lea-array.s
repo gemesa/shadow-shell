@@ -4,13 +4,21 @@
 
 .text
 
-main:
+.att_syntax
+
+format:
+	.asciz "%d:%d\n"
+
+array:
+	.long 11, 22, 33, 44
+
+main_:
 	push %rbp
 	mov  %rsp, %rbp
 	sub  $16, %rsp
 	movl $0, -4(%rbp) # index
 
-loop:
+loop_:
 	lea  format(%rip), %rdi
 	movl -4(%rbp), %esi
 	lea  array(, %rsi, 4), %rdx
@@ -22,14 +30,34 @@ loop:
 	addl $1, -4(%rbp)
 	jmp  loop
 
-end:
+end_:
 	mov %rbp, %rsp
 	pop %rbp
 	xor %eax, %eax
 	ret
 
-format:
-	.asciz "%d:%d\n"
+.intel_syntax noprefix
 
-array:
-	.long 11, 22, 33, 44
+main:
+	push rbp
+	mov  rbp, rsp
+	sub  rsp, 16
+	mov  dword ptr [rbp-4], 0
+
+loop:
+	lea  rdi, [rip+format]
+	mov  esi, dword ptr [rbp-4]
+	lea  rdx, [array+rsi*4]
+	mov  rdx, [rdx]
+	xor  eax, eax
+	call printf
+	cmp  dword ptr [rbp-4], 3
+	je   end
+	add  dword ptr [rbp-4], 1
+	jmp  loop
+
+end:
+	mov rsp, rbp
+	pop rbp
+	xor eax, eax
+	ret
