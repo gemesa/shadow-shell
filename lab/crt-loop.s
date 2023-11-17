@@ -25,4 +25,4 @@ loop_end:
 	ret
 
 message:
-	.asciz "iter\0"
+	.asciz "iter"
