@@ -3,7 +3,7 @@
 .text
 
 message:
-	.ascii "Hello\n"
+	.asciz "Hello\n"
 
 .att_syntax
 

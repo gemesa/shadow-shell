@@ -75,4 +75,4 @@ main:
 	ret
 
 format_string:
-	.ascii "%d\n"
+	.asciz "%d\n"

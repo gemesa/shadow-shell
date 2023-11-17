@@ -11,4 +11,4 @@ main:
 	ret
 
 message:
-	.ascii "Hello\n"
+	.asciz "Hello\n"
