@@ -4,13 +4,18 @@
 
 .text
 
-main:
+.att_syntax
+
+message:
+	.asciz "iter"
+
+main_:
 	push %rbp
 	mov  %rsp, %rbp
 	movl $0, -4(%rbp)
 	sub  $16, %rsp
 
-loop_start:
+loop_start_:
 	mov  $message, %edi
 	call puts
 	cmpl $9, -4(%rbp)
@@ -18,11 +23,30 @@ loop_start:
 	addl $1, -4(%rbp)
 	jmp  loop_start
 
-loop_end:
+loop_end_:
 	mov %rbp, %rsp
 	pop %rbp
 	xor %eax, %eax
 	ret
 
-message:
-	.asciz "iter"
+.intel_syntax noprefix
+
+main:
+	push rbp
+	mov  rbp, rsp
+	mov  dword ptr [rbp-4], 0
+	sub  rsp, 16
+
+loop_start:
+	mov  edi, offset message
+	call puts
+	cmp  dword ptr [rbp-4], 9
+	je   loop_end
+	add  dword ptr [rbp-4], 1
+	jmp  loop_start
+
+loop_end:
+	mov rsp, rbp
+	pop rbp
+	xor eax, eax
+	ret
