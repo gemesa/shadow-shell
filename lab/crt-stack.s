@@ -4,7 +4,12 @@
 
 .text
 
-sum:
+.att_syntax
+
+format_string:
+	.asciz "%d\n"
+
+sum_:
 	push %rbp
 	mov  %rsp, %rbp
 	mov  %edi, -20(%rbp)
@@ -15,7 +20,7 @@ sum:
 	pop  %rbp
 	ret
 
-mul:
+mul_:
 	push %rbp
 	mov  %rsp, %rbp
 	mov  %edi, -20(%rbp)
@@ -26,7 +31,7 @@ mul:
 	pop  %rbp
 	ret
 
-calc:
+calc_:
 	push %rbp
 	mov  %rsp, %rbp
 	push %rbx               # preserved register
@@ -50,7 +55,7 @@ calc:
 	pop  %rbp
 	ret
 
-main:
+main_:
 	push %rbp
 	mov  $10, %edi
 	mov  $11, %esi
@@ -74,5 +79,74 @@ main:
 	pop  %rbp
 	ret
 
-format_string:
-	.asciz "%d\n"
+.intel_syntax noprefix
+
+sum:
+	push rbp
+	mov  rbp, rsp
+	mov  [rbp-20], edi
+	mov  [rbp-24], esi
+	mov  eax, [rbp-20]
+	mov  edx, [rbp-24]
+	add  eax, edx
+	pop  rbp
+	ret
+
+mul:
+	push rbp
+	mov  rbp, rsp
+	mov  [rbp-20], edi
+	mov  [rbp-24], esi
+	mov  eax, [rbp-20]
+	mov  edx, [rbp-24]
+	imul eax, edx
+	pop  rbp
+	ret
+
+calc:
+	push rbp
+	mov  rbp, rsp
+	push rbx
+	sub  rsp, 24
+	mov  [rbp-32], edi
+	mov  [rbp-28], esi
+	mov  eax, [rbp-32]
+	mov  edx, [rbp-28]
+	mov  edi, eax
+	mov  esi, edx
+	call sum
+	mov  ebx, eax
+	mov  eax, [rbp-32]
+	mov  edx, [rbp-28]
+	mov  edi, eax
+	mov  esi, edx
+	call mul
+	add  eax, ebx
+	mov  rbx, [rbp-8]
+	mov  rsp, rbp
+	pop  rbp
+	ret
+
+main:
+	push rbp
+	mov  edi, 10
+	mov  esi, 11
+	call sum
+	mov  edi, offset format_string
+	mov  esi, eax
+	call printf
+	mov  edi, 10
+	mov  esi, 11
+	call mul
+	mov  edi, offset format_string
+	mov  esi, eax
+	call printf
+	xor  eax, eax
+	mov  edi, 10
+	mov  esi, 11
+	call calc
+	mov  edi, offset format_string
+	mov  esi, eax
+	call printf
+	pop  rbp
+	ret
