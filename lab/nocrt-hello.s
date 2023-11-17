@@ -2,13 +2,12 @@
 
 .text
 
+.att_syntax
+
 message:
 	.asciz "Hello\n"
 
-.att_syntax
-
 _start_:
-
 	mov $1, %rax        # syscall NR - write: 1
 	mov $1, %rdi        # arg0 - unsigned int fd - stdout: 1
 	mov $message, %rsi  # arg1 - const char *buf
@@ -22,7 +21,6 @@ _start_:
 .intel_syntax noprefix
 
 _start:
-
 	mov rax, 1
 	mov rdi, 1
 	lea rsi, [rip + message] # equivalent: mov rsi, offset message

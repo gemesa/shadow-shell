@@ -5,10 +5,10 @@
 
 .text
 
+.att_syntax
+
 message:
 	.asciz "Hello\n"
-
-.att_syntax
 
 _start_:
 	movl $message, %esi # src
@@ -32,7 +32,7 @@ _start:
 	mov esi, offset message
 	mov edi, offset buffer
 	mov ecx, 6
-	rep  movsb
+	rep movsb
 
 	mov rax, 1
 	mov rdi, 1

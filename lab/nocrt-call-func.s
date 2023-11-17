@@ -2,10 +2,10 @@
 
 .text
 
+.att_syntax
+
 message:
 	.asciz "Hello\n"
-
-.att_syntax
 
 _start_:
 	call print

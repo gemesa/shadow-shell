@@ -4,10 +4,10 @@
 
 .text
 
+.att_syntax
+
 message:
 	.asciz "Hello\n"
-
-.att_syntax
 
 main_:
 	mov  $message, %rdi  # arg0 - const char *string
