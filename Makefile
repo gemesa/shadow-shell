@@ -14,7 +14,8 @@ $(BUILDDIR)/nocrt-rep \
 $(BUILDDIR)/crt-cmp \
 $(BUILDDIR)/crt-loop \
 $(BUILDDIR)/crt-lea-array \
-$(BUILDDIR)/msf-msg.exe
+$(BUILDDIR)/msf-msg.exe \
+lab/sh/target/x86_64-pc-windows-gnu/debug/sh.exe
 
 $(BUILDDIR)/crt-hello: lab/crt-hello.s
 	gcc $< -g -o $@
@@ -54,5 +55,9 @@ $(BUILDDIR)/crt-lea-array: lab/crt-lea-array.s
 $(BUILDDIR)/msf-msg.exe: lab/sh.c
 	x86_64-w64-mingw32-gcc $< -g -o $@
 
+lab/sh/target/x86_64-pc-windows-gnu/debug/sh.exe: lab/sh/src/main.rs
+	cd lab/sh && cargo build --target x86_64-pc-windows-gnu
+
 clean:
 	rm -rf $(BUILDDIR)
+	cd lab/sh && cargo clean
