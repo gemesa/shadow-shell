@@ -23,3 +23,5 @@
 - https://crates.io/crates/windows
 - https://github.com/microsoft/windows-rs
 - https://microsoft.github.io/windows-docs-rs/doc/windows/Win32/System/Memory/fn.VirtualAlloc.html
+- https://stackoverflow.com/questions/31492799/cross-compile-a-rust-application-from-linux-to-windows
+- https://doc.rust-lang.org/core/ptr/fn.copy_nonoverlapping.html
