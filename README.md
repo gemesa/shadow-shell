@@ -15,3 +15,11 @@
 - https://github.com/reg1reg1/Shellcode
 - https://godbolt.org/
 - https://dogbolt.org/
+- https://nitesculucian.github.io/2018/07/24/msfvenom-cheat-sheet/
+- https://ivanitlearning.wordpress.com/2018/10/14/shellcoding-with-msfvenom/
+- https://security.stackexchange.com/questions/176495/executing-a-msfvenom-shellcode-in-c-program
+- http://0xdabbad00.com/2012/12/07/dep-data-execution-prevention-explanation/
+- https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualalloc
+- https://crates.io/crates/windows
+- https://github.com/microsoft/windows-rs
+- https://microsoft.github.io/windows-docs-rs/doc/windows/Win32/System/Memory/fn.VirtualAlloc.html
