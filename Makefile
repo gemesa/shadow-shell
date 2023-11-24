@@ -13,7 +13,8 @@ $(BUILDDIR)/nocrt-call-func \
 $(BUILDDIR)/nocrt-rep \
 $(BUILDDIR)/crt-cmp \
 $(BUILDDIR)/crt-loop \
-$(BUILDDIR)/crt-lea-array
+$(BUILDDIR)/crt-lea-array \
+$(BUILDDIR)/msf-msg.exe
 
 $(BUILDDIR)/crt-hello: lab/crt-hello.s
 	gcc $< -g -o $@
@@ -49,6 +50,9 @@ $(BUILDDIR)/crt-loop: lab/crt-loop.s
 
 $(BUILDDIR)/crt-lea-array: lab/crt-lea-array.s
 	gcc $< -g -o $@
+
+$(BUILDDIR)/msf-msg.exe: lab/sh.c
+	x86_64-w64-mingw32-gcc $< -g -o $@
 
 clean:
 	rm -rf $(BUILDDIR)
