@@ -7,6 +7,7 @@ $(shell mkdir -p $(BUILDDIR))
 all: $(BUILDDIR)/crt-hello \
 $(BUILDDIR)/crt-stack \
 $(BUILDDIR)/nocrt-hello \
+$(BUILDDIR)/nocrt-hello-nasm \
 $(BUILDDIR)/nocrt-jmp-func \
 $(BUILDDIR)/nocrt-call-func \
 $(BUILDDIR)/nocrt-rep \
@@ -23,6 +24,10 @@ $(BUILDDIR)/crt-stack: lab/crt-stack.s
 $(BUILDDIR)/nocrt-hello: lab/nocrt-hello.s
 	as $< -g -o $(BUILDDIR)/nocrt-hello.o
 	ld $(BUILDDIR)/nocrt-hello.o -g -o $@
+
+$(BUILDDIR)/nocrt-hello-nasm: lab/nocrt-hello-nasm.s
+	nasm -f elf64 $< -g -o $(BUILDDIR)/nocrt-hello-nasm.o
+	ld $(BUILDDIR)/nocrt-hello-nasm.o -g -o $@
 
 $(BUILDDIR)/nocrt-jmp-func: lab/nocrt-jmp-func.s
 	as $< -g -o $(BUILDDIR)/nocrt-jmp-func.o
