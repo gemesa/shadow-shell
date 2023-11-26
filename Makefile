@@ -56,8 +56,8 @@ $(BUILDDIR)/msf-msg.exe: lab/sh.c
 	x86_64-w64-mingw32-gcc $< -g -o $@
 
 lab/sh/target/x86_64-pc-windows-gnu/debug/sh.exe: lab/sh/src/main.rs
-	cd lab/sh && cargo build --target x86_64-pc-windows-gnu
+	cargo build --target x86_64-pc-windows-gnu
 
 clean:
 	rm -rf $(BUILDDIR)
-	cd lab/sh && cargo clean
+	cargo clean
