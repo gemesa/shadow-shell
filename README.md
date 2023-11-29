@@ -1,5 +1,10 @@
 # shadow-shell
 
+## My blog posts
+- https://gemesa.dev/diving-into-shellcodes-0
+- https://gemesa.dev/diving-into-shellcodes-1
+- https://gemesa.dev/shattering-the-stack-0
+
 ## References
 
 - https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md
