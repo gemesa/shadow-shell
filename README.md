@@ -1,5 +1,7 @@
 # shadow-shell
 
+Cyber lab to explore different memory exploits.
+
 ## My blog posts
 - https://gemesa.dev/diving-into-shellcodes-0
 - https://gemesa.dev/diving-into-shellcodes-1
