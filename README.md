@@ -6,6 +6,7 @@ Cyber lab to explore different memory exploits.
 - https://gemesa.dev/diving-into-shellcodes-0
 - https://gemesa.dev/diving-into-shellcodes-1
 - https://gemesa.dev/shattering-the-stack-0
+- https://gemesa.dev/shattering-the-stack-1
 
 ## References
 
@@ -34,3 +35,4 @@ Cyber lab to explore different memory exploits.
 - https://doc.rust-lang.org/core/ptr/fn.copy_nonoverlapping.html
 - https://github.com/muhammet-mucahit/Security-Exercises
 - https://lettieri.iet.unipi.it/hacking/aslr-pie.pdf
+- https://reverseengineering.stackexchange.com/questions/19598/find-base-address-and-memory-size-of-program-debugged-in-gdb
