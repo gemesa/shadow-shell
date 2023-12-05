@@ -15,7 +15,7 @@ $(BUILDDIR)/crt-cmp \
 $(BUILDDIR)/crt-loop \
 $(BUILDDIR)/crt-lea-array \
 $(BUILDDIR)/msf-msg.exe \
-lab/sh/target/x86_64-pc-windows-gnu/debug/sh.exe \
+lab/shellcode/shc/target/x86_64-pc-windows-gnu/debug/shc.exe \
 $(BUILDDIR)/bof-server-no-pie \
 $(BUILDDIR)/bof-server-pie
 
@@ -54,10 +54,10 @@ $(BUILDDIR)/crt-loop: lab/asm-hive/crt-loop.s
 $(BUILDDIR)/crt-lea-array: lab/asm-hive/crt-lea-array.s
 	gcc $< -g -o $@
 
-$(BUILDDIR)/msf-msg.exe: lab/sh.c
+$(BUILDDIR)/msf-msg.exe: lab/shellcode/shc.c
 	x86_64-w64-mingw32-gcc $< -g -o $@
 
-lab/sh/target/x86_64-pc-windows-gnu/debug/sh.exe: lab/sh/src/main.rs
+lab/shellcode/shc/target/x86_64-pc-windows-gnu/debug/shc.exe: lab/shellcode/shc/src/main.rs
 	cargo build --target x86_64-pc-windows-gnu
 
 $(BUILDDIR)/bof-server-no-pie: lab/bof-server.c

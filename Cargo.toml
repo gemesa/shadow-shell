@@ -1,5 +1,5 @@
 [workspace]
 resolver = "2"
 members = [
-    "lab/sh",
+    "lab/shellcode/shc",
 ]
