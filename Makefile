@@ -19,39 +19,39 @@ lab/sh/target/x86_64-pc-windows-gnu/debug/sh.exe \
 $(BUILDDIR)/bof-server-no-pie \
 $(BUILDDIR)/bof-server-pie
 
-$(BUILDDIR)/crt-hello: lab/crt-hello.s
+$(BUILDDIR)/crt-hello: lab/asm-hive/crt-hello.s
 	gcc $< -g -o $@
 
-$(BUILDDIR)/crt-stack: lab/crt-stack.s
+$(BUILDDIR)/crt-stack: lab/asm-hive/crt-stack.s
 	gcc $< -g -o $@
 
-$(BUILDDIR)/nocrt-hello: lab/nocrt-hello.s
+$(BUILDDIR)/nocrt-hello: lab/asm-hive/nocrt-hello.s
 	as $< -g -o $(BUILDDIR)/nocrt-hello.o
 	ld $(BUILDDIR)/nocrt-hello.o -g -o $@
 
-$(BUILDDIR)/nocrt-hello-nasm: lab/nocrt-hello-nasm.s
+$(BUILDDIR)/nocrt-hello-nasm: lab/asm-hive/nocrt-hello-nasm.s
 	nasm -f elf64 $< -g -o $(BUILDDIR)/nocrt-hello-nasm.o
 	ld $(BUILDDIR)/nocrt-hello-nasm.o -g -o $@
 
-$(BUILDDIR)/nocrt-jmp-func: lab/nocrt-jmp-func.s
+$(BUILDDIR)/nocrt-jmp-func: lab/asm-hive/nocrt-jmp-func.s
 	as $< -g -o $(BUILDDIR)/nocrt-jmp-func.o
 	ld $(BUILDDIR)/nocrt-jmp-func.o -g -o $@
 
-$(BUILDDIR)/nocrt-call-func: lab/nocrt-call-func.s
+$(BUILDDIR)/nocrt-call-func: lab/asm-hive/nocrt-call-func.s
 	as $< -g -o $(BUILDDIR)/nocrt-call-func.o
 	ld $(BUILDDIR)/nocrt-call-func.o -g -o $@
 
-$(BUILDDIR)/nocrt-rep: lab/nocrt-rep.s
+$(BUILDDIR)/nocrt-rep: lab/asm-hive/nocrt-rep.s
 	as $< -g -o $(BUILDDIR)/nocrt-rep.o
 	ld $(BUILDDIR)/nocrt-rep.o -g -o $@
 
-$(BUILDDIR)/crt-cmp: lab/crt-cmp.s
+$(BUILDDIR)/crt-cmp: lab/asm-hive/crt-cmp.s
 	gcc $< -g -o $@
 
-$(BUILDDIR)/crt-loop: lab/crt-loop.s
+$(BUILDDIR)/crt-loop: lab/asm-hive/crt-loop.s
 	gcc $< -g -o $@
 
-$(BUILDDIR)/crt-lea-array: lab/crt-lea-array.s
+$(BUILDDIR)/crt-lea-array: lab/asm-hive/crt-lea-array.s
 	gcc $< -g -o $@
 
 $(BUILDDIR)/msf-msg.exe: lab/sh.c
