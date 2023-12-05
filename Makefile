@@ -60,10 +60,10 @@ $(BUILDDIR)/msf-msg.exe: lab/shellcode/shc.c
 lab/shellcode/shc/target/x86_64-pc-windows-gnu/debug/shc.exe: lab/shellcode/shc/src/main.rs
 	cargo build --target x86_64-pc-windows-gnu
 
-$(BUILDDIR)/bof-server-no-pie: lab/bof-server.c
+$(BUILDDIR)/bof-server-no-pie: lab/buffer-overflow/bof-server.c
 	gcc $< -g -o $@
 
-$(BUILDDIR)/bof-server-pie: lab/bof-server.c
+$(BUILDDIR)/bof-server-pie: lab/buffer-overflow/bof-server.c
 	gcc $< -g -fPIE -pie -o $@
 
 clean:
