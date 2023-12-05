@@ -2,9 +2,10 @@ BUILDDIR = build
 
 $(shell mkdir -p $(BUILDDIR))
 
-.PHONY: all clean
+.PHONY: all clean cargo-build
 
-all: $(BUILDDIR)/crt-hello \
+all: cargo-build \
+$(BUILDDIR)/crt-hello \
 $(BUILDDIR)/crt-stack \
 $(BUILDDIR)/nocrt-hello \
 $(BUILDDIR)/nocrt-hello-nasm \
@@ -15,9 +16,11 @@ $(BUILDDIR)/crt-cmp \
 $(BUILDDIR)/crt-loop \
 $(BUILDDIR)/crt-lea-array \
 $(BUILDDIR)/msf-msg.exe \
-lab/shellcode/shc/target/x86_64-pc-windows-gnu/debug/shc.exe \
 $(BUILDDIR)/bof-server-no-pie \
 $(BUILDDIR)/bof-server-pie
+
+cargo-build:
+	cargo build --target x86_64-pc-windows-gnu
 
 $(BUILDDIR)/crt-hello: lab/asm-hive/crt-hello.s
 	gcc $< -g -o $@
@@ -56,9 +59,6 @@ $(BUILDDIR)/crt-lea-array: lab/asm-hive/crt-lea-array.s
 
 $(BUILDDIR)/msf-msg.exe: lab/shellcode/shc.c
 	x86_64-w64-mingw32-gcc $< -g -o $@
-
-lab/shellcode/shc/target/x86_64-pc-windows-gnu/debug/shc.exe: lab/shellcode/shc/src/main.rs
-	cargo build --target x86_64-pc-windows-gnu
 
 $(BUILDDIR)/bof-server-no-pie: lab/buffer-overflow/bof-server.c
 	gcc $< -g -o $@
