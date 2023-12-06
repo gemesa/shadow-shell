@@ -17,7 +17,9 @@ $(BUILDDIR)/crt-loop \
 $(BUILDDIR)/crt-lea-array \
 $(BUILDDIR)/msf-msg.exe \
 $(BUILDDIR)/bof-server-no-pie \
-$(BUILDDIR)/bof-server-pie
+$(BUILDDIR)/bof-server-pie \
+$(BUILDDIR)/bof-server-no-pie2 \
+$(BUILDDIR)/bof-server-pie2
 
 cargo-build:
 	cargo build --target x86_64-pc-windows-gnu
@@ -65,6 +67,12 @@ $(BUILDDIR)/bof-server-no-pie: lab/buffer-overflow/bof-server.c
 
 $(BUILDDIR)/bof-server-pie: lab/buffer-overflow/bof-server.c
 	gcc $< -g -fPIE -pie -o $@
+
+$(BUILDDIR)/bof-server-no-pie2: lab/buffer-overflow/bof-server2.c
+	gcc $< -g -o $@ -fno-stack-protector -z execstack
+
+$(BUILDDIR)/bof-server-pie2: lab/buffer-overflow/bof-server2.c
+	gcc $< -g -fPIE -pie -o $@ -fno-stack-protector -z execstack
 
 clean:
 	rm -rf $(BUILDDIR)
