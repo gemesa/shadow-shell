@@ -1,6 +1,6 @@
 # shadow-shell
 
-Cyber lab to explore different memory exploits.
+Cyber lab to explore different memory exploits and to analyze malware.
 
 ## My blog posts
 - https://gemesa.dev/diving-into-shellcodes-0
