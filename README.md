@@ -7,6 +7,7 @@ Cyber lab to explore different memory exploits.
 - https://gemesa.dev/diving-into-shellcodes-1
 - https://gemesa.dev/shattering-the-stack-0
 - https://gemesa.dev/shattering-the-stack-1
+- https://gemesa.dev/shattering-the-stack-2
 
 ## References
 
