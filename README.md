@@ -4,7 +4,6 @@ Cyber lab to explore different memory exploits and to analyze malware.
 
 ## My blog posts
 - https://gemesa.dev/diving-into-shellcodes-0
-- https://gemesa.dev/diving-into-shellcodes-1
 - https://gemesa.dev/shattering-the-stack-0
 - https://gemesa.dev/shattering-the-stack-1
 - https://gemesa.dev/shattering-the-stack-2
