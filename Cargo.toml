@@ -2,4 +2,5 @@
 resolver = "2"
 members = [
     "lab/shellcode/shc",
+    "lab/frida"
 ]
