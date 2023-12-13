@@ -1,0 +1,1 @@
+rustc --target=x86_64-unknown-linux-musl -C panic=abort -C target-feature=-crt-static -C link-args=-nostdlib main.rs
