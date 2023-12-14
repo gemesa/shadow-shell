@@ -19,10 +19,13 @@ $(BUILDDIR)/msf-msg.exe \
 $(BUILDDIR)/bof-server-no-pie \
 $(BUILDDIR)/bof-server-pie \
 $(BUILDDIR)/bof-server-no-pie2 \
-$(BUILDDIR)/bof-server-pie2
+$(BUILDDIR)/bof-server-pie2 \
+$(BUILDDIR)/dyn \
+$(BUILDDIR)/dyn2
 
 cargo-build:
-	cargo build --target x86_64-pc-windows-gnu
+	cargo build --target x86_64-pc-windows-gnu --manifest-path lab/shellcode/shc/Cargo.toml
+	cargo build --target x86_64-unknown-linux-gnu --manifest-path lab/frida/Cargo.toml
 
 $(BUILDDIR)/crt-hello: lab/asm-hive/crt-hello.s
 	gcc $< -g -o $@
@@ -73,6 +76,12 @@ $(BUILDDIR)/bof-server-no-pie2: lab/buffer-overflow/bof-server2.c
 
 $(BUILDDIR)/bof-server-pie2: lab/buffer-overflow/bof-server2.c
 	gcc $< -g -fPIE -pie -o $@ -fno-stack-protector -z execstack
+
+$(BUILDDIR)/dyn: lab/frida/dyn.c
+	gcc $< -g -o $@
+
+$(BUILDDIR)/dyn2: lab/frida/dyn2.c
+	gcc $< -g -o $@
 
 clean:
 	rm -rf $(BUILDDIR)

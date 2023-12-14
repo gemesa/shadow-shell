@@ -35,7 +35,7 @@ var moduleName = "hook";
 var baseAddress = Module.getBaseAddress(moduleName);
 console.log("base address: " + baseAddress);
 
-var offsetOfHookmon = 0xa270;
+var offsetOfHookmon = 0x9830;
 var addressOfHookmon = baseAddress.add(offsetOfHookmon);
 
 Interceptor.attach(addressOfHookmon, {
