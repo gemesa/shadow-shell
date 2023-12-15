@@ -21,7 +21,9 @@ $(BUILDDIR)/bof-server-pie \
 $(BUILDDIR)/bof-server-no-pie2 \
 $(BUILDDIR)/bof-server-pie2 \
 $(BUILDDIR)/dyn \
-$(BUILDDIR)/dyn2
+$(BUILDDIR)/dyn2 \
+$(BUILDDIR)/version.res \
+$(BUILDDIR)/msf-msg-rsrc.exe
 
 cargo-build:
 	cargo build --target x86_64-pc-windows-gnu --manifest-path lab/shellcode/shc/Cargo.toml
@@ -82,6 +84,12 @@ $(BUILDDIR)/dyn: lab/frida/dyn.c
 
 $(BUILDDIR)/dyn2: lab/frida/dyn2.c
 	gcc $< -g -o $@
+
+$(BUILDDIR)/version.res: lab/rsrc/version.rc
+	x86_64-w64-mingw32-windres $< -O coff -o $@
+
+$(BUILDDIR)/msf-msg-rsrc.exe: lab/shellcode/shc.c $(BUILDDIR)/version.res
+	x86_64-w64-mingw32-gcc $^ -g -o $@
 
 clean:
 	rm -rf $(BUILDDIR)
