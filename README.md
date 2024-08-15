@@ -2,6 +2,14 @@
 
 Cyber lab to explore different memory exploits and to analyze malware.
 
+## Prerequisites
+
+```
+$ sudo dnf install mingw64-gcc
+$ rustup target add x86_64-pc-windows-gnu
+$ sudo dnf install nasm
+```
+
 ## My blog posts
 - https://gemesa.dev/diving-into-shellcodes
 - https://gemesa.dev/shattering-the-stack-0
