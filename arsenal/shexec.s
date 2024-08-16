@@ -39,15 +39,15 @@ main:
 	test rax, rax
 	js open_failure
 
-	mov rdi, offset close
-	mov rsi, [r13 + 8]
-	xor eax, eax
-	call printf
-
 	# TODO
 	# 1. fstat (get filesize)
 	# 2. mmap
 	# 3. read
+
+	mov rdi, offset close
+	mov rsi, [r13 + 8]
+	xor eax, eax
+	call printf
 
 	mov rdi, rax	# arg0 - unsigned int fd
 	mov rax, 3 		# syscall NR - close: 3
