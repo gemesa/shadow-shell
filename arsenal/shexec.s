@@ -45,7 +45,10 @@ main:
 	# 2. execute shellcode
 	# 3. munmap
 
-	jmp exit_success
+	mov rsp, rbp
+	pop rbp
+	xor eax, eax
+	ret
 
 args_failure:
 	mov rdi, offset usage
@@ -68,10 +71,4 @@ exit_failure:
 	mov rsp, rbp
 	pop rbp
 	mov eax, 1
-	ret
-
-exit_success:
-	mov rsp, rbp
-	pop rbp
-	xor eax, eax
 	ret
