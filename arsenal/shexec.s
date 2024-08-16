@@ -27,7 +27,6 @@ main:
 	xor rdx, rdx		# arg2 - umode_t mode
 	syscall
 
-	push rax
 	test rax, rax
 	js open_failure
 
@@ -36,8 +35,8 @@ main:
 	# 2. mmap
 	# 3. read
 
-	mov rdi, rax	# arg0 - unsigned int fd
-	mov rax, 3 		# syscall NR - close: 3
+	mov rdi, rax		# arg0 - unsigned int fd
+	mov rax, 3 			# syscall NR - close: 3
 	syscall
 
 	# TODO
@@ -58,6 +57,7 @@ args_failure:
 	jmp exit_failure
 
 open_failure:
+	push rax			# error code used later by perror()
 	call __errno_location
 	mov rsi, rax
 	pop rax
