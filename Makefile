@@ -15,6 +15,7 @@ $(BUILDDIR)/nocrt-rep \
 $(BUILDDIR)/crt-cmp \
 $(BUILDDIR)/crt-loop \
 $(BUILDDIR)/crt-lea-array \
+$(BUILDDIR)/crt-args \
 $(BUILDDIR)/msf-msg.exe \
 $(BUILDDIR)/bof-server-no-pie \
 $(BUILDDIR)/bof-server-pie \
@@ -62,6 +63,9 @@ $(BUILDDIR)/crt-loop: lab/asm-hive/crt-loop.s
 	gcc $< -g -o $@
 
 $(BUILDDIR)/crt-lea-array: lab/asm-hive/crt-lea-array.s
+	gcc $< -g -o $@
+
+$(BUILDDIR)/crt-args: lab/asm-hive/crt-args.s
 	gcc $< -g -o $@
 
 $(BUILDDIR)/msf-msg.exe: lab/shellcode/shc.c
