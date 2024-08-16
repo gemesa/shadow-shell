@@ -12,6 +12,7 @@ $(BUILDDIR)/nocrt-hello-nasm \
 $(BUILDDIR)/nocrt-jmp-func \
 $(BUILDDIR)/nocrt-call-func \
 $(BUILDDIR)/nocrt-rep \
+$(BUILDDIR)/nocrt-args \
 $(BUILDDIR)/crt-cmp \
 $(BUILDDIR)/crt-loop \
 $(BUILDDIR)/crt-lea-array \
@@ -55,6 +56,10 @@ $(BUILDDIR)/nocrt-call-func: lab/asm-hive/nocrt-call-func.s
 $(BUILDDIR)/nocrt-rep: lab/asm-hive/nocrt-rep.s
 	as $< -g -o $(BUILDDIR)/nocrt-rep.o
 	ld $(BUILDDIR)/nocrt-rep.o -g -o $@
+
+$(BUILDDIR)/nocrt-args: lab/asm-hive/nocrt-args.s
+	as $< -g -o $(BUILDDIR)/nocrt-args.o
+	ld $(BUILDDIR)/nocrt-args.o -g -o $@
 
 $(BUILDDIR)/crt-cmp: lab/asm-hive/crt-cmp.s
 	gcc $< -g -o $@
