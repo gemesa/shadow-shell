@@ -25,7 +25,8 @@ $(BUILDDIR)/bof-server-pie2 \
 $(BUILDDIR)/dyn \
 $(BUILDDIR)/dyn2 \
 $(BUILDDIR)/version.res \
-$(BUILDDIR)/msf-msg-rsrc.exe
+$(BUILDDIR)/msf-msg-rsrc.exe\
+$(BUILDDIR)/shexec
 
 cargo-build:
 	cargo build --target x86_64-pc-windows-gnu --manifest-path lab/shellcode/shc/Cargo.toml
@@ -99,6 +100,9 @@ $(BUILDDIR)/version.res: lab/rsrc/version.rc
 
 $(BUILDDIR)/msf-msg-rsrc.exe: lab/shellcode/shc.c $(BUILDDIR)/version.res
 	x86_64-w64-mingw32-gcc $^ -g -o $@
+
+$(BUILDDIR)/shexec: arsenal/shexec.s
+	gcc $< -g -o $@ -z execstack -fno-stack-protector
 
 clean:
 	rm -rf $(BUILDDIR)
