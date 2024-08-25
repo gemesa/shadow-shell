@@ -1,5 +1,3 @@
-.section .note.GNU-stack, "", @progbits
-
 .global main
 
 .text
@@ -57,12 +55,12 @@ args_failure:
 	jmp exit_failure
 
 open_failure:
-	push rax			# error code used later by perror()
+	push rax			# `errno` used later by `perror()`
 	call __errno_location
 	mov rsi, rax
 	pop rax
 	neg rax
-	mov [rsi], eax
+	mov [rsi], eax		# `errno` is a 32 bit int: https://man7.org/linux/man-pages/man3/errno.3.html
 	mov rdi, offset open
 	call perror
 	jmp exit_failure
