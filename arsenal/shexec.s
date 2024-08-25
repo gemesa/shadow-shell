@@ -8,6 +8,12 @@ usage:
 open:
 	.asciz "open"
 
+fstat:
+	.asciz "fstat"
+
+filesize_fmt:
+    .asciz "file size: %ld bytes\n"
+
 .intel_syntax noprefix
 
 main:
@@ -28,10 +34,30 @@ main:
 	test rax, rax
 	js open_failure
 
+	mov r14, rax		# fd
+
+	sub rsp, 144		# size of fstat struct
+
+	mov rax, 5			# syscall NR - fstat: 5
+	mov rdi, r14		# arg0 - unsigned int fd
+	mov rsi, rsp
+	syscall
+
+	test rax, rax
+	js fstat_failure
+
+    mov rax, [rsp + 48] # offset of st_size: 48 bytes
+
+    mov rdi, offset filesize_fmt
+    mov rsi, rax
+    xor rax, rax        # clear rax before calling variadic function
+    call printf
+
+    add rsp, 144
+
 	# TODO
-	# 1. fstat (get filesize)
-	# 2. mmap
-	# 3. read
+	# 1. mmap
+	# 2. read
 
 	mov rdi, rax		# arg0 - unsigned int fd
 	mov rax, 3 			# syscall NR - close: 3
@@ -62,6 +88,17 @@ open_failure:
 	neg rax
 	mov [rsi], eax		# `errno` is a 32 bit int: https://man7.org/linux/man-pages/man3/errno.3.html
 	mov rdi, offset open
+	call perror
+	jmp exit_failure
+
+fstat_failure:
+	push rax			# `errno` used later by `perror()`
+	call __errno_location
+	mov rsi, rax
+	pop rax
+	neg rax
+	mov [rsi], eax		# `errno` is a 32 bit int: https://man7.org/linux/man-pages/man3/errno.3.html
+	mov rdi, offset fstat
 	call perror
 	jmp exit_failure
 

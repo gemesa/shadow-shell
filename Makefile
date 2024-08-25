@@ -26,7 +26,8 @@ $(BUILDDIR)/dyn \
 $(BUILDDIR)/dyn2 \
 $(BUILDDIR)/version.res \
 $(BUILDDIR)/msf-msg-rsrc.exe\
-$(BUILDDIR)/shexec
+$(BUILDDIR)/shexec \
+$(BUILDDIR)/fstat \
 
 cargo-build:
 	cargo build --target x86_64-pc-windows-gnu --manifest-path lab/shellcode/shc/Cargo.toml
@@ -103,6 +104,9 @@ $(BUILDDIR)/msf-msg-rsrc.exe: lab/shellcode/shc.c $(BUILDDIR)/version.res
 
 $(BUILDDIR)/shexec: arsenal/shexec.s
 	gcc $< -g -o $@ -z execstack -fno-stack-protector
+
+$(BUILDDIR)/fstat: lab/util/fstat.c
+	gcc $< -g -o $@
 
 clean:
 	rm -rf $(BUILDDIR)
