@@ -59,7 +59,7 @@ main:
 	# 1. mmap
 	# 2. read
 
-	mov rdi, rax		# arg0 - unsigned int fd
+	mov rdi, r14		# arg0 - unsigned int fd
 	mov rax, 3 			# syscall NR - close: 3
 	syscall
 
