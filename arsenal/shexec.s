@@ -25,6 +25,9 @@ main:
 	cmp r12, 2
 	jne args_failure
 
+	call __errno_location
+	mov r15, rax		# address of errno
+
 	mov rax, 2 			# syscall NR - open: 2
 	mov rdi, [r13 + 8]	# arg0 - const char *filename
 	mov rsi, 0			# arg1 - int flags
@@ -81,23 +84,15 @@ args_failure:
 	jmp exit_failure
 
 open_failure:
-	push rax			# `errno` used later by `perror()`
-	call __errno_location
-	mov rsi, rax
-	pop rax
 	neg rax
-	mov [rsi], eax		# `errno` is a 32 bit int: https://man7.org/linux/man-pages/man3/errno.3.html
+	mov [r15], eax		# `errno` is a 32 bit int: https://man7.org/linux/man-pages/man3/errno.3.html
 	mov rdi, offset open
 	call perror
 	jmp exit_failure
 
 fstat_failure:
-	push rax			# `errno` used later by `perror()`
-	call __errno_location
-	mov rsi, rax
-	pop rax
 	neg rax
-	mov [rsi], eax		# `errno` is a 32 bit int: https://man7.org/linux/man-pages/man3/errno.3.html
+	mov [r15], eax		# `errno` is a 32 bit int: https://man7.org/linux/man-pages/man3/errno.3.html
 	mov rdi, offset fstat
 	call perror
 	jmp exit_failure
