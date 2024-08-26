@@ -17,6 +17,9 @@ mmap:
 read:
 	.asciz "read"
 
+mprotect:
+	.asciz "mprotect"
+
 filesize_fmt:
     .asciz "file size: %ld bytes\n"
 
@@ -70,6 +73,7 @@ main:
 	# #define PROT_WRITE	0x2
 	mov rdx, 0x1		# arg2 - int prot
 	or rdx, 0x2
+	# or rdx, 0x4
 	# https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/mman-common.h
 	# #define MAP_ANONYMOUS	0x20
 	# https://github.com/torvalds/linux/blob/master/include/uapi/linux/mman.h
@@ -84,6 +88,8 @@ main:
 	js mmap_failure
 
 	push rax
+	push rax
+	push rax
 	mov rax, 0			# syscall NR - read: 0
 	mov rdi, r14		# arg0 - unsigned int fd
 	pop rsi				# arg1 - char *buf
@@ -97,10 +103,26 @@ main:
 	mov rax, 3 			# syscall NR - close: 3
 	syscall
 
+	mov rax, 10			# syscall NR - mprotect: 10
+	pop rdi				# arg0 - unsigned long start
+	mov rsi, [rsp + 48]	# arg1 - size_t len
+	# https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/mman-common.h
+	# #define PROT_READ		0x1
+	# #define PROT_WRITE	0x2
+	# #define PROT_EXEC		0x4	
+	mov rdx, 0x1		# arg2 - unsigned long prot
+	or rdx, 0x2
+	or rdx, 0x4
+	syscall
+
+	test rax, rax
+	js mprotect_failure
+
+	pop rax
+	call rax
+
 	# TODO
-	# 1. mprotect
-	# 2. execute shellcode
-	# 3. munmap
+	# munmap
 
 	mov rsp, rbp
 	pop rbp
@@ -139,6 +161,13 @@ read_failure:
 	neg rax
 	mov [r15], eax		# `errno` is a 32 bit int: https://man7.org/linux/man-pages/man3/errno.3.html
 	mov rdi, offset read
+	call perror
+	jmp exit_failure
+
+mprotect_failure:
+	neg rax
+	mov [r15], eax		# `errno` is a 32 bit int: https://man7.org/linux/man-pages/man3/errno.3.html
+	mov rdi, offset mprotect
 	call perror
 	jmp exit_failure
 
