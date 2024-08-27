@@ -46,8 +46,8 @@ main:
 
 	sub rsp, 144		# size of stat struct, refer to struct stat in /usr/include/bits/struct_stat.h
 
-	mov rdi, r14		# arg0 - unsigned int fd
-	mov rsi, rsp
+	mov rdi, r14		# arg0 - int fd
+	mov rsi, rsp		# agr1 - struct stat *buf
 	call fstat
 
 	test rax, rax
@@ -82,24 +82,24 @@ main:
 	js mmap_failure
 
 	mov r12, rax		# mmap addr
-	mov rdi, r14		# arg0 - unsigned int fd
+	mov rdi, r14		# arg0 - int fd
 	mov rsi, r12		# arg1 - char *buf
-	mov rdx, [rsp + 48]	# arg2 - size_t count
+	mov rdx, [rsp + 48]	# arg2 - size_t nbytes
 	call read
 
 	test rax, rax
 	js read_failure
 
-	mov rdi, r14		# arg0 - unsigned int fd
+	mov rdi, r14		# arg0 - int fd
 	call close
 
-	mov rdi, r12		# arg0 - unsigned long start
+	mov rdi, r12		# arg0 - void* addr
 	mov rsi, [rsp + 48]	# arg1 - size_t len
 	# https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/mman-common.h
 	# #define PROT_READ		0x1
 	# #define PROT_WRITE	0x2
 	# #define PROT_EXEC		0x4	
-	mov rdx, 0x1		# arg2 - unsigned long prot
+	mov rdx, 0x1		# arg2 - int prot
 	or rdx, 0x2
 	or rdx, 0x4
 	call mprotect
