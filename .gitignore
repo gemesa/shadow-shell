@@ -2,3 +2,4 @@ build/
 target/
 Cargo.lock
 .vscode/
+*.bin
