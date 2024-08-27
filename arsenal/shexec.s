@@ -78,8 +78,8 @@ main:
 	# #define MAP_ANONYMOUS	0x20
 	# https://github.com/torvalds/linux/blob/master/include/uapi/linux/mman.h
 	# #define MAP_PRIVATE	0x02
-	mov r10, 0x20
-	or r10, 0x2
+	mov rcx, 0x20
+	or rcx, 0x2
 	mov r8, -1			# arg3 - int fd
 	xor r9, r9			# arg4 - off_t offset
 	syscall
