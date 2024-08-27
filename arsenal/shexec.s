@@ -87,12 +87,10 @@ main:
 	test rax, rax
 	js mmap_failure
 
-	push rax
-	push rax
-	push rax
+	mov r12, rax		# mmap addr
 	mov rax, 0			# syscall NR - read: 0
 	mov rdi, r14		# arg0 - unsigned int fd
-	pop rsi				# arg1 - char *buf
+	mov rsi, r12		# arg1 - char *buf
 	mov rdx, [rsp + 48]	# arg2 - size_t count
 	syscall
 
@@ -104,7 +102,7 @@ main:
 	syscall
 
 	mov rax, 10			# syscall NR - mprotect: 10
-	pop rdi				# arg0 - unsigned long start
+	mov rdi, r12		# arg0 - unsigned long start
 	mov rsi, [rsp + 48]	# arg1 - size_t len
 	# https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/mman-common.h
 	# #define PROT_READ		0x1
@@ -118,7 +116,7 @@ main:
 	test rax, rax
 	js mprotect_failure
 
-	pop rax
+	mov rax, r12
 	call rax
 
 	# TODO
