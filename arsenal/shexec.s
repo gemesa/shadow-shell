@@ -55,7 +55,7 @@ main:
 
     mov rax, [rsp + 48]        # offset of st_size: 48 bytes
 
-    mov rdi, offset filesize_fmt
+    lea rdi, [rip + filesize_fmt]
     mov rsi, rax
     xor rax, rax               # clear rax before calling variadic function
     call printf
@@ -115,34 +115,34 @@ main:
     ret
 
 args_failure:
-    mov rdi, offset usage
+    lea rdi, [rip + usage]
     mov rsi, [r13]
     xor rax, rax
     call printf
     jmp exit_failure
 
 open_failure:
-    mov rdi, offset open_msg
+    lea rdi, [rip + open_msg]
     call perror
     jmp exit_failure
 
 fstat_failure:
-    mov rdi, offset fstat_msg
+    lea rdi, [rip + fstat_msg]
     call perror
     jmp exit_failure
 
 mmap_failure:
-    mov rdi, offset mmap_msg
+    lea rdi, [rip + mmap_msg]
     call perror
     jmp exit_failure
 
 read_failure:
-    mov rdi, offset read_msg
+    lea rdi, [rip + read_msg]
     call perror
     jmp exit_failure
 
 mprotect_failure:
-    mov rdi, offset mprotect_msg
+    lea rdi, [rip + mprotect_msg]
     call perror
     jmp exit_failure
 

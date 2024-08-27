@@ -103,7 +103,7 @@ $(BUILDDIR)/msf-msg-rsrc.exe: lab/shellcode/shc.c $(BUILDDIR)/version.res
 	x86_64-w64-mingw32-gcc $^ -g -o $@
 
 $(BUILDDIR)/shexec: arsenal/shexec.s
-	gcc $< -g -o $@
+	gcc $< -g -o $@ -pie
 
 $(BUILDDIR)/fstat: lab/util/fstat.c
 	gcc $< -g -o $@
