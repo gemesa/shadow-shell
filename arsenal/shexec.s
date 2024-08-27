@@ -3,25 +3,25 @@
 .text
 
 usage:
-	.asciz "Usage: %s <shellcode_file>\n"
+	.string "Usage: %s <shellcode_file>\n"
 
 open_msg:
-	.asciz "open"
+	.string "open"
 
 fstat_msg:
-	.asciz "fstat"
+	.string "fstat"
 
 mmap_msg:
-	.asciz "mmap"
+	.string "mmap"
 
 read_msg:
-	.asciz "read"
+	.string "read"
 
 mprotect_msg:
-	.asciz "mprotect"
+	.string "mprotect"
 
 filesize_fmt:
-    .asciz "file size: %ld bytes\n"
+    .string "file size: %ld bytes\n"
 
 .intel_syntax noprefix
 
@@ -65,15 +65,13 @@ main:
 	# https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/mman-common.h
 	# #define PROT_READ		0x1
 	# #define PROT_WRITE	0x2
-	mov rdx, 0x1		# arg2 - int prot
-	or rdx, 0x2
+	mov rdx, 0x3		# arg2 - int prot
 	# or rdx, 0x4
 	# https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/mman-common.h
 	# #define MAP_ANONYMOUS	0x20
 	# https://github.com/torvalds/linux/blob/master/include/uapi/linux/mman.h
 	# #define MAP_PRIVATE	0x02
-	mov rcx, 0x20
-	or rcx, 0x2
+	mov rcx, 0x22
 	mov r8, -1			# arg3 - int fd
 	xor r9, r9			# arg4 - off_t offset
 	call mmap
@@ -99,9 +97,7 @@ main:
 	# #define PROT_READ		0x1
 	# #define PROT_WRITE	0x2
 	# #define PROT_EXEC		0x4	
-	mov rdx, 0x1		# arg2 - int prot
-	or rdx, 0x2
-	or rdx, 0x4
+	mov rdx, 0x7		# arg2 - int prot
 	call mprotect
 
 	test rax, rax
