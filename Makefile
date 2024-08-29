@@ -2,6 +2,7 @@ BUILDDIR = build
 
 $(shell mkdir -p $(BUILDDIR))
 $(shell mkdir -p $(BUILDDIR)/x64)
+$(shell mkdir -p $(BUILDDIR)/arm64)
 
 .PHONY: all clean cargo-build
 
@@ -30,6 +31,15 @@ $(BUILDDIR)/msf-msg-rsrc.exe \
 $(BUILDDIR)/x64/shexec \
 $(BUILDDIR)/x64/shcode_hello \
 $(BUILDDIR)/fstat \
+
+# sudo docker build -t my-arm64-dev-env .
+# sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
+# call `make arm` in the arm64 container
+arm: \
+$(BUILDDIR)/arm64/shexec \
+$(BUILDDIR)/arm64/nocrt-hello \
+$(BUILDDIR)/arm64/shcode_hello \
+$(BUILDDIR)/arm64/shcode_shell \
 
 cargo-build:
 	cargo build --target x86_64-pc-windows-gnu --manifest-path lab/shellcode/shc/Cargo.toml
@@ -114,6 +124,23 @@ $(BUILDDIR)/x64/shcode_hello: arsenal/x64/shcode_hello.s
 
 $(BUILDDIR)/fstat: lab/util/fstat.c
 	gcc $< -g -o $@
+
+$(BUILDDIR)/arm64/shexec: arsenal/shexec.c
+	gcc $< -g -o $@
+
+$(BUILDDIR)/arm64/nocrt-hello: lab/asm-hive/arm64/nocrt-hello.s
+	as $< -g -o $(BUILDDIR)/arm64/nocrt-hello.o
+	ld $(BUILDDIR)/arm64/nocrt-hello.o -g -o $@
+
+$(BUILDDIR)/arm64/shcode_hello: arsenal/arm64/shcode_hello.s
+	as $< -g -o $(BUILDDIR)/arm64/shcode_hello.o
+	ld $(BUILDDIR)/arm64/shcode_hello.o -g -o $@
+	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/arm64/shcode_hello.bin
+
+$(BUILDDIR)/arm64/shcode_shell: arsenal/arm64/shcode_shell.s
+	as $< -g -o $(BUILDDIR)/arm64/shcode_shell.o
+	ld $(BUILDDIR)/arm64/shcode_shell.o -g -o $@
+	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/arm64/shcode_shell.bin
 
 clean:
 	rm -rf $(BUILDDIR)

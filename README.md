@@ -8,6 +8,10 @@ Cyber lab to explore different memory exploits and to analyze malware.
 $ sudo dnf install mingw64-gcc
 $ rustup target add x86_64-pc-windows-gnu
 $ sudo dnf install nasm
+$ sudo dnf install docker
+$ sudo systemctl start docker
+$ sudo systemctl enable docker
+
 ```
 
 ## My blog posts
@@ -45,3 +49,10 @@ $ sudo dnf install nasm
 - https://github.com/muhammet-mucahit/Security-Exercises
 - https://lettieri.iet.unipi.it/hacking/aslr-pie.pdf
 - https://reverseengineering.stackexchange.com/questions/19598/find-base-address-and-memory-size-of-program-debugged-in-gdb
+
+### ARM64
+
+- https://syscall.sh/
+- https://developer.arm.com/documentation
+- https://gist.github.com/luk6xff/9f8d2520530a823944355e59343eadc1
+- https://www.exploit-db.com/exploits/47048
