@@ -26,7 +26,7 @@ $(BUILDDIR)/bof-server-pie2 \
 $(BUILDDIR)/dyn \
 $(BUILDDIR)/dyn2 \
 $(BUILDDIR)/version.res \
-$(BUILDDIR)/msf-msg-rsrc.exe\
+$(BUILDDIR)/msf-msg-rsrc.exe \
 $(BUILDDIR)/x64/shexec \
 $(BUILDDIR)/fstat \
 
