@@ -28,6 +28,7 @@ $(BUILDDIR)/dyn2 \
 $(BUILDDIR)/version.res \
 $(BUILDDIR)/msf-msg-rsrc.exe \
 $(BUILDDIR)/x64/shexec \
+$(BUILDDIR)/x64/shcode_hello \
 $(BUILDDIR)/fstat \
 
 cargo-build:
@@ -105,6 +106,11 @@ $(BUILDDIR)/msf-msg-rsrc.exe: lab/shellcode/shc.c $(BUILDDIR)/version.res
 
 $(BUILDDIR)/x64/shexec: arsenal/x64/shexec.s
 	gcc $< -g -o $@ -pie
+
+$(BUILDDIR)/x64/shcode_hello: arsenal/x64/shcode_hello.s
+	as $< -g -o $(BUILDDIR)/x64/shcode_hello.o
+	ld $(BUILDDIR)/x64/shcode_hello.o -g -o $@
+	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/x64/shcode_hello.bin
 
 $(BUILDDIR)/fstat: lab/util/fstat.c
 	gcc $< -g -o $@
