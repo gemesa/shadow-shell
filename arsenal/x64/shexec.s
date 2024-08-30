@@ -66,14 +66,13 @@ main:
     # #define PROT_READ     0x1
     # #define PROT_WRITE    0x2
     mov rdx, 0x3               # arg2 - int prot
-    # or rdx, 0x4
     # https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/mman-common.h
     # #define MAP_ANONYMOUS  0x20
     # https://github.com/torvalds/linux/blob/master/include/uapi/linux/mman.h
     # #define MAP_PRIVATE    0x02
-    mov rcx, 0x22
-    mov r8, -1                 # arg3 - int fd
-    xor r9, r9                 # arg4 - off_t offset
+    mov rcx, 0x22              # arg3 - int flags
+    mov r8, -1                 # arg4 - int fd
+    xor r9, r9                 # arg5 - off_t offset
     call mmap
 
     test rax, rax
