@@ -47,7 +47,7 @@ main:
     sub rsp, 144               # size of stat struct, refer to struct stat in /usr/include/bits/struct_stat.h
 
     mov rdi, r14               # arg0 - int fd
-    mov rsi, rsp               # agr1 - struct stat *buf
+    mov rsi, rsp               # arg1 - struct stat *buf
     call fstat
 
     test rax, rax
