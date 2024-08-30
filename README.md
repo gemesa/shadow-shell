@@ -9,6 +9,7 @@ $ sudo dnf install mingw64-gcc
 $ sudo dnf install winetricks
 $ rustup target add x86_64-pc-windows-gnu
 $ sudo dnf install nasm
+$ pip install frida-tools
 $ sudo dnf install docker
 $ sudo systemctl start docker
 $ sudo systemctl enable docker
