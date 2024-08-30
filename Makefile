@@ -125,8 +125,8 @@ $(BUILDDIR)/x64/shcode_hello: arsenal/x64/shcode_hello.s
 $(BUILDDIR)/fstat: lab/util/fstat.c
 	gcc $< -g -o $@
 
-$(BUILDDIR)/arm64/shexec: arsenal/shexec.c
-	gcc $< -g -o $@
+$(BUILDDIR)/arm64/shexec: arsenal/arm64/shexec.s
+	gcc $< -g -o $@ -pie
 
 $(BUILDDIR)/arm64/nocrt-hello: lab/asm-hive/arm64/nocrt-hello.s
 	as $< -g -o $(BUILDDIR)/arm64/nocrt-hello.o
