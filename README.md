@@ -1,6 +1,11 @@
 # shadow-shell
 
-Cyber lab to explore different memory exploits and to analyze malware.
+A cyber lab to:
+
+- learn AMD64 and ARM64 assembly
+- analyze shellcode
+- analyze malware
+- explore memory exploits
 
 ## Prerequisites
 
