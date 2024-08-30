@@ -6,6 +6,7 @@ Cyber lab to explore different memory exploits and to analyze malware.
 
 ```
 $ sudo dnf install mingw64-gcc
+$ sudo dnf install winetricks
 $ rustup target add x86_64-pc-windows-gnu
 $ sudo dnf install nasm
 $ sudo dnf install docker
