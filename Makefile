@@ -21,18 +21,18 @@ $(BUILDDIR)/linux/x64/crt-cmp \
 $(BUILDDIR)/linux/x64/crt-loop \
 $(BUILDDIR)/linux/x64/crt-lea-array \
 $(BUILDDIR)/linux/x64/crt-args \
-$(BUILDDIR)/msf-msg.exe \
-$(BUILDDIR)/bof-server-no-pie \
-$(BUILDDIR)/bof-server-pie \
-$(BUILDDIR)/bof-server-no-pie2 \
-$(BUILDDIR)/bof-server-pie2 \
-$(BUILDDIR)/dyn \
-$(BUILDDIR)/dyn2 \
-$(BUILDDIR)/version.res \
-$(BUILDDIR)/msf-msg-rsrc.exe \
+$(BUILDDIR)/windows/msf-msg.exe \
+$(BUILDDIR)/linux/bof-server-no-pie \
+$(BUILDDIR)/linux/bof-server-pie \
+$(BUILDDIR)/linux/bof-server-no-pie2 \
+$(BUILDDIR)/linux/bof-server-pie2 \
+$(BUILDDIR)/linux/dyn \
+$(BUILDDIR)/linux/dyn2 \
+$(BUILDDIR)/windows/version.res \
+$(BUILDDIR)/windows/msf-msg-rsrc.exe \
 $(BUILDDIR)/linux/x64/shexec \
 $(BUILDDIR)/linux/x64/shcode_hello \
-$(BUILDDIR)/fstat \
+$(BUILDDIR)/linux/fstat \
 $(BUILDDIR)/windows/shexec.exe \
 
 # sudo docker build -t my-arm64-dev-env .
@@ -45,76 +45,76 @@ $(BUILDDIR)/linux/arm64/shcode_hello \
 $(BUILDDIR)/linux/arm64/shcode_shell \
 
 cargo-build:
-	cargo build --target x86_64-pc-windows-gnu --manifest-path lab/shellcode/shc/Cargo.toml
-	cargo build --target x86_64-unknown-linux-gnu --manifest-path lab/frida/Cargo.toml
+	cargo build --target x86_64-pc-windows-gnu --manifest-path lab/windows/shellcode/shc/Cargo.toml
+	cargo build --target x86_64-unknown-linux-gnu --manifest-path lab/linux/frida/Cargo.toml
 
-$(BUILDDIR)/linux/x64/crt-hello: lab/asm-hive/linux/x64/crt-hello.s
+$(BUILDDIR)/linux/x64/crt-hello: lab/linux/asm-hive/x64/crt-hello.s
 	gcc $< -g -o $@
 
-$(BUILDDIR)/linux/x64/crt-stack: lab/asm-hive/linux/x64/crt-stack.s
+$(BUILDDIR)/linux/x64/crt-stack: lab/linux/asm-hive/x64/crt-stack.s
 	gcc $< -g -o $@
 
-$(BUILDDIR)/linux/x64/nocrt-hello: lab/asm-hive/linux/x64/nocrt-hello.s
+$(BUILDDIR)/linux/x64/nocrt-hello: lab/linux/asm-hive/x64/nocrt-hello.s
 	as $< -g -o $(BUILDDIR)/linux/x64/nocrt-hello.o
 	ld $(BUILDDIR)/linux/x64/nocrt-hello.o -g -o $@
 
-$(BUILDDIR)/linux/x64/nocrt-hello-nasm: lab/asm-hive/linux/x64/nocrt-hello-nasm.s
+$(BUILDDIR)/linux/x64/nocrt-hello-nasm: lab/linux/asm-hive/x64/nocrt-hello-nasm.s
 	nasm -f elf64 $< -g -o $(BUILDDIR)/linux/x64/nocrt-hello-nasm.o
 	ld $(BUILDDIR)/linux/x64/nocrt-hello-nasm.o -g -o $@
 
-$(BUILDDIR)/linux/x64/nocrt-jmp-func: lab/asm-hive/linux/x64/nocrt-jmp-func.s
+$(BUILDDIR)/linux/x64/nocrt-jmp-func: lab/linux/asm-hive/x64/nocrt-jmp-func.s
 	as $< -g -o $(BUILDDIR)/linux/x64/nocrt-jmp-func.o
 	ld $(BUILDDIR)/linux/x64/nocrt-jmp-func.o -g -o $@
 
-$(BUILDDIR)/linux/x64/nocrt-call-func: lab/asm-hive/linux/x64/nocrt-call-func.s
+$(BUILDDIR)/linux/x64/nocrt-call-func: lab/linux/asm-hive/x64/nocrt-call-func.s
 	as $< -g -o $(BUILDDIR)/linux/x64/nocrt-call-func.o
 	ld $(BUILDDIR)/linux/x64/nocrt-call-func.o -g -o $@
 
-$(BUILDDIR)/linux/x64/nocrt-rep: lab/asm-hive/linux/x64/nocrt-rep.s
+$(BUILDDIR)/linux/x64/nocrt-rep: lab/linux/asm-hive/x64/nocrt-rep.s
 	as $< -g -o $(BUILDDIR)/linux/x64/nocrt-rep.o
 	ld $(BUILDDIR)/linux/x64/nocrt-rep.o -g -o $@
 
-$(BUILDDIR)/linux/x64/nocrt-args: lab/asm-hive/linux/x64/nocrt-args.s
+$(BUILDDIR)/linux/x64/nocrt-args: lab/linux/asm-hive/x64/nocrt-args.s
 	as $< -g -o $(BUILDDIR)/linux/x64/nocrt-args.o
 	ld $(BUILDDIR)/linux/x64/nocrt-args.o -g -o $@
 
-$(BUILDDIR)/linux/x64/crt-cmp: lab/asm-hive/linux/x64/crt-cmp.s
+$(BUILDDIR)/linux/x64/crt-cmp: lab/linux/asm-hive/x64/crt-cmp.s
 	gcc $< -g -o $@
 
-$(BUILDDIR)/linux/x64/crt-loop: lab/asm-hive/linux/x64/crt-loop.s
+$(BUILDDIR)/linux/x64/crt-loop: lab/linux/asm-hive/x64/crt-loop.s
 	gcc $< -g -o $@
 
-$(BUILDDIR)/linux/x64/crt-lea-array: lab/asm-hive/linux/x64/crt-lea-array.s
+$(BUILDDIR)/linux/x64/crt-lea-array: lab/linux/asm-hive/x64/crt-lea-array.s
 	gcc $< -g -o $@
 
-$(BUILDDIR)/linux/x64/crt-args: lab/asm-hive/linux/x64/crt-args.s
+$(BUILDDIR)/linux/x64/crt-args: lab/linux/asm-hive/x64/crt-args.s
 	gcc $< -g -o $@
 
-$(BUILDDIR)/msf-msg.exe: lab/shellcode/shc.c
+$(BUILDDIR)/windows/msf-msg.exe: lab/windows/shellcode/shc.c
 	x86_64-w64-mingw32-gcc $< -g -o $@
 
-$(BUILDDIR)/bof-server-no-pie: lab/buffer-overflow/bof-server.c
+$(BUILDDIR)/linux/bof-server-no-pie: lab/linux/buffer-overflow/bof-server.c
 	gcc $< -g -o $@
 
-$(BUILDDIR)/bof-server-pie: lab/buffer-overflow/bof-server.c
+$(BUILDDIR)/linux/bof-server-pie: lab/linux/buffer-overflow/bof-server.c
 	gcc $< -g -fPIE -pie -o $@
 
-$(BUILDDIR)/bof-server-no-pie2: lab/buffer-overflow/bof-server2.c
+$(BUILDDIR)/linux/bof-server-no-pie2: lab/linux/buffer-overflow/bof-server2.c
 	gcc $< -g -o $@ -fno-stack-protector -z execstack
 
-$(BUILDDIR)/bof-server-pie2: lab/buffer-overflow/bof-server2.c
+$(BUILDDIR)/linux/bof-server-pie2: lab/linux/buffer-overflow/bof-server2.c
 	gcc $< -g -fPIE -pie -o $@ -fno-stack-protector -z execstack
 
-$(BUILDDIR)/dyn: lab/frida/dyn.c
+$(BUILDDIR)/linux/dyn: lab/linux/frida/dyn.c
 	gcc $< -g -o $@
 
-$(BUILDDIR)/dyn2: lab/frida/dyn2.c
+$(BUILDDIR)/linux/dyn2: lab/linux/frida/dyn2.c
 	gcc $< -g -o $@
 
-$(BUILDDIR)/version.res: lab/rsrc/version.rc
+$(BUILDDIR)/windows/version.res: lab/windows/rsrc/version.rc
 	x86_64-w64-mingw32-windres $< -O coff -o $@
 
-$(BUILDDIR)/msf-msg-rsrc.exe: lab/shellcode/shc.c $(BUILDDIR)/version.res
+$(BUILDDIR)/windows/msf-msg-rsrc.exe: lab/windows/shellcode/shc.c $(BUILDDIR)/windows/version.res
 	x86_64-w64-mingw32-gcc $^ -g -o $@
 
 $(BUILDDIR)/linux/x64/shexec: arsenal/linux/x64/shexec.s
@@ -125,13 +125,13 @@ $(BUILDDIR)/linux/x64/shcode_hello: arsenal/linux/x64/shcode_hello.s
 	ld $(BUILDDIR)/linux/x64/shcode_hello.o -g -o $@
 	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/x64/shcode_hello.bin
 
-$(BUILDDIR)/fstat: lab/util/fstat.c
+$(BUILDDIR)/linux/fstat: lab/linux/util/fstat.c
 	gcc $< -g -o $@
 
 $(BUILDDIR)/linux/arm64/shexec: arsenal/linux/arm64/shexec.s
 	gcc $< -g -o $@ -pie
 
-$(BUILDDIR)/linux/arm64/nocrt-hello: lab/asm-hive/linux/arm64/nocrt-hello.s
+$(BUILDDIR)/linux/arm64/nocrt-hello: lab/linux/asm-hive/arm64/nocrt-hello.s
 	as $< -g -o $(BUILDDIR)/linux/arm64/nocrt-hello.o
 	ld $(BUILDDIR)/linux/arm64/nocrt-hello.o -g -o $@
 

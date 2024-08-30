@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
 members = [
-    "lab/shellcode/shc",
-    "lab/frida"
+    "lab/windows/shellcode/shc",
+    "lab/linux/frida"
 ]
