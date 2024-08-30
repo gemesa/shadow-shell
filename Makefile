@@ -4,6 +4,7 @@ $(shell mkdir -p $(BUILDDIR))
 $(shell mkdir -p $(BUILDDIR)/linux)
 $(shell mkdir -p $(BUILDDIR)/linux/x64)
 $(shell mkdir -p $(BUILDDIR)/linux/arm64)
+$(shell mkdir -p $(BUILDDIR)/windows)
 
 .PHONY: all clean cargo-build
 
@@ -32,6 +33,7 @@ $(BUILDDIR)/msf-msg-rsrc.exe \
 $(BUILDDIR)/linux/x64/shexec \
 $(BUILDDIR)/linux/x64/shcode_hello \
 $(BUILDDIR)/fstat \
+$(BUILDDIR)/windows/shexec.exe \
 
 # sudo docker build -t my-arm64-dev-env .
 # sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
@@ -142,6 +144,9 @@ $(BUILDDIR)/linux/arm64/shcode_shell: arsenal/linux/arm64/shcode_shell.s
 	as $< -g -o $(BUILDDIR)/linux/arm64/shcode_shell.o
 	ld $(BUILDDIR)/linux/arm64/shcode_shell.o -g -o $@
 	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode_shell.bin
+
+$(BUILDDIR)/windows/shexec.exe: arsenal/windows/shexec.c
+	x86_64-w64-mingw32-gcc $< -g -o $@
 
 clean:
 	rm -rf $(BUILDDIR)
