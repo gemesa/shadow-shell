@@ -33,13 +33,13 @@ arsenal/
 lab/
 ├── linux/
 │   ├── asm-hive/: ARM64 and x64 assembly snippets
-│   ├── buffer-overflow: buffer overflow POC
-│   ├── frida: experimenting with frida
-│   ├── rs-no-std: experimenting with Rust in a no_std environment
-│   └── util: utility code snippets
+│   ├── buffer-overflow/: buffer overflow POC
+│   ├── frida/: experimenting with frida
+│   ├── rs-no-std/: experimenting with Rust in a no_std environment
+│   └── util/: utility code snippets
 └── windows/
-    ├── rsrc: experimenting with .rsrc
-    └── shellcode: shellcode POC
+    ├── rsrc/: experimenting with .rsrc
+    └── shellcode/: shellcode POC
 ```
 I also wrote a couple of detailed blog posts about the buffer overflow and shellcode POCs:
 
