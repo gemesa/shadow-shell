@@ -12,6 +12,7 @@ shadow-shell is a cyber lab designed for:
 The repository contains two main parts:
 
 - **arsenal**: command line tools to support malware analysis
+    - `shexec`: a shellcode executor that can be combined with other tools like `strace` (Linux), `ProcMon` and `TCPView` (Windows) to analyze shellcode functionality
 - **lab**: experimental code snippets, some are documented while others are not
 
 ```
