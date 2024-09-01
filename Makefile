@@ -6,9 +6,19 @@ $(shell mkdir -p $(BUILDDIR)/linux/x64)
 $(shell mkdir -p $(BUILDDIR)/linux/arm64)
 $(shell mkdir -p $(BUILDDIR)/windows)
 
-.PHONY: all clean cargo-build
+.PHONY: arm64 x64 clean cargo-build
 
-all: cargo-build \
+# sudo docker build -t my-arm64-dev-env .
+# sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
+# call `make arm64` in the arm64 container
+arm64: \
+$(BUILDDIR)/linux/arm64/shexec \
+$(BUILDDIR)/linux/arm64/nocrt-hello \
+$(BUILDDIR)/linux/arm64/shcode_hello \
+$(BUILDDIR)/linux/arm64/shcode_shell \
+
+x64: \
+cargo-build \
 $(BUILDDIR)/linux/x64/crt-hello \
 $(BUILDDIR)/linux/x64/crt-stack \
 $(BUILDDIR)/linux/x64/nocrt-hello \
@@ -21,32 +31,40 @@ $(BUILDDIR)/linux/x64/crt-cmp \
 $(BUILDDIR)/linux/x64/crt-loop \
 $(BUILDDIR)/linux/x64/crt-lea-array \
 $(BUILDDIR)/linux/x64/crt-args \
-$(BUILDDIR)/windows/msf-msg.exe \
 $(BUILDDIR)/linux/bof-server-no-pie \
 $(BUILDDIR)/linux/bof-server-pie \
 $(BUILDDIR)/linux/bof-server-no-pie2 \
 $(BUILDDIR)/linux/bof-server-pie2 \
 $(BUILDDIR)/linux/dyn \
 $(BUILDDIR)/linux/dyn2 \
-$(BUILDDIR)/windows/version.res \
-$(BUILDDIR)/windows/msf-msg-rsrc.exe \
+$(BUILDDIR)/linux/fstat \
 $(BUILDDIR)/linux/x64/shexec \
 $(BUILDDIR)/linux/x64/shcode_hello \
-$(BUILDDIR)/linux/fstat \
+$(BUILDDIR)/windows/msf-msg.exe \
+$(BUILDDIR)/windows/version.res \
+$(BUILDDIR)/windows/msf-msg-rsrc.exe \
 $(BUILDDIR)/windows/shexec.exe \
-
-# sudo docker build -t my-arm64-dev-env .
-# sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
-# call `make arm` in the arm64 container
-arm: \
-$(BUILDDIR)/linux/arm64/shexec \
-$(BUILDDIR)/linux/arm64/nocrt-hello \
-$(BUILDDIR)/linux/arm64/shcode_hello \
-$(BUILDDIR)/linux/arm64/shcode_shell \
 
 cargo-build:
 	cargo build --target x86_64-pc-windows-gnu --manifest-path lab/windows/shellcode/shc/Cargo.toml
 	cargo build --target x86_64-unknown-linux-gnu --manifest-path lab/linux/frida/Cargo.toml
+
+$(BUILDDIR)/linux/arm64/shexec: arsenal/linux/arm64/shexec.s
+	gcc $< -g -o $@ -pie
+
+$(BUILDDIR)/linux/arm64/nocrt-hello: lab/linux/asm-hive/arm64/nocrt-hello.s
+	as $< -g -o $(BUILDDIR)/linux/arm64/nocrt-hello.o
+	ld $(BUILDDIR)/linux/arm64/nocrt-hello.o -g -o $@
+
+$(BUILDDIR)/linux/arm64/shcode_hello: arsenal/linux/arm64/shcode_hello.s
+	as $< -g -o $(BUILDDIR)/linux/arm64/shcode_hello.o
+	ld $(BUILDDIR)/linux/arm64/shcode_hello.o -g -o $@
+	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode_hello.bin
+
+$(BUILDDIR)/linux/arm64/shcode_shell: arsenal/linux/arm64/shcode_shell.s
+	as $< -g -o $(BUILDDIR)/linux/arm64/shcode_shell.o
+	ld $(BUILDDIR)/linux/arm64/shcode_shell.o -g -o $@
+	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode_shell.bin
 
 $(BUILDDIR)/linux/x64/crt-hello: lab/linux/asm-hive/x64/crt-hello.s
 	gcc $< -g -o $@
@@ -90,9 +108,6 @@ $(BUILDDIR)/linux/x64/crt-lea-array: lab/linux/asm-hive/x64/crt-lea-array.s
 $(BUILDDIR)/linux/x64/crt-args: lab/linux/asm-hive/x64/crt-args.s
 	gcc $< -g -o $@
 
-$(BUILDDIR)/windows/msf-msg.exe: lab/windows/shellcode/shc.c
-	x86_64-w64-mingw32-gcc $< -g -o $@
-
 $(BUILDDIR)/linux/bof-server-no-pie: lab/linux/buffer-overflow/bof-server.c
 	gcc $< -g -o $@
 
@@ -111,11 +126,8 @@ $(BUILDDIR)/linux/dyn: lab/linux/frida/dyn.c
 $(BUILDDIR)/linux/dyn2: lab/linux/frida/dyn2.c
 	gcc $< -g -o $@
 
-$(BUILDDIR)/windows/version.res: lab/windows/rsrc/version.rc
-	x86_64-w64-mingw32-windres $< -O coff -o $@
-
-$(BUILDDIR)/windows/msf-msg-rsrc.exe: lab/windows/shellcode/shc.c $(BUILDDIR)/windows/version.res
-	x86_64-w64-mingw32-gcc $^ -g -o $@
+$(BUILDDIR)/linux/fstat: lab/linux/util/fstat.c
+	gcc $< -g -o $@
 
 $(BUILDDIR)/linux/x64/shexec: arsenal/linux/x64/shexec.s
 	gcc $< -g -o $@ -pie
@@ -125,25 +137,14 @@ $(BUILDDIR)/linux/x64/shcode_hello: arsenal/linux/x64/shcode_hello.s
 	ld $(BUILDDIR)/linux/x64/shcode_hello.o -g -o $@
 	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/x64/shcode_hello.bin
 
-$(BUILDDIR)/linux/fstat: lab/linux/util/fstat.c
-	gcc $< -g -o $@
+$(BUILDDIR)/windows/msf-msg.exe: lab/windows/shellcode/shc.c
+	x86_64-w64-mingw32-gcc $< -g -o $@
 
-$(BUILDDIR)/linux/arm64/shexec: arsenal/linux/arm64/shexec.s
-	gcc $< -g -o $@ -pie
+$(BUILDDIR)/windows/version.res: lab/windows/rsrc/version.rc
+	x86_64-w64-mingw32-windres $< -O coff -o $@
 
-$(BUILDDIR)/linux/arm64/nocrt-hello: lab/linux/asm-hive/arm64/nocrt-hello.s
-	as $< -g -o $(BUILDDIR)/linux/arm64/nocrt-hello.o
-	ld $(BUILDDIR)/linux/arm64/nocrt-hello.o -g -o $@
-
-$(BUILDDIR)/linux/arm64/shcode_hello: arsenal/linux/arm64/shcode_hello.s
-	as $< -g -o $(BUILDDIR)/linux/arm64/shcode_hello.o
-	ld $(BUILDDIR)/linux/arm64/shcode_hello.o -g -o $@
-	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode_hello.bin
-
-$(BUILDDIR)/linux/arm64/shcode_shell: arsenal/linux/arm64/shcode_shell.s
-	as $< -g -o $(BUILDDIR)/linux/arm64/shcode_shell.o
-	ld $(BUILDDIR)/linux/arm64/shcode_shell.o -g -o $@
-	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode_shell.bin
+$(BUILDDIR)/windows/msf-msg-rsrc.exe: lab/windows/shellcode/shc.c $(BUILDDIR)/windows/version.res
+	x86_64-w64-mingw32-gcc $^ -g -o $@
 
 $(BUILDDIR)/windows/shexec.exe: arsenal/windows/shexec.c
 	x86_64-w64-mingw32-gcc $< -g -o $@

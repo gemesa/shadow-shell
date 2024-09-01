@@ -66,7 +66,7 @@ $ sudo systemctl enable docker
 ## x64 codebase
 
 ```
-$ make
+$ make x64
 ```
 
 ## ARM64 codebase
@@ -76,7 +76,7 @@ I have an x64 PC so to build and run ARM64 binaries I use an ARM64v8 Docker cont
 ```
 $ sudo docker build -t my-arm64-dev-env .
 $ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
-# make arm
+# make arm64
 ```
 
 # How to use
@@ -86,7 +86,7 @@ $ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
 ```
 # sudo docker build -t my-arm64-dev-env .
 $ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
-# make arm
+# make arm64
 # ./build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
 Hello!
 # ./build/linux/arm64/shexec build/linux/arm64/shcode_shell.bin
@@ -97,7 +97,7 @@ uid=0(root) gid=0(root) groups=0(root)
 ## Linux x64
 
 ```
-$ make
+$ make x64
 $ ./build/linux/x64/shexec build/linux/x64/shcode_hello.bin
 file size: 57 bytes
 Hello, World!
@@ -127,7 +127,7 @@ exit(0)                                 = ?
 ## Windows x64 (VM)
 
 ```
-$ make
+$ make x64
 $ msfvenom -p windows/x64/messagebox -b \x00 -f raw -o win_shcode.bin
 ```
 
