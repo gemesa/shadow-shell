@@ -49,7 +49,7 @@ arsenal/
 
 # How to use
 
-## Linux ARM64:
+## Linux ARM64
 
 ```
 # sudo docker build -t my-arm64-dev-env .
@@ -62,7 +62,7 @@ Hello!
 uid=0(root) gid=0(root) groups=0(root)
 # exit
 ```
-## Linux x64:
+## Linux x64
 
 ```
 $ make
@@ -92,7 +92,7 @@ write(1, "Hello, World!\n\0", 15Hello, World!
 exit(0)                                 = ?
 ```
 
-## Windows x64 (VM):
+## Windows x64 (VM)
 
 ```
 $ make
