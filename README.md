@@ -36,12 +36,12 @@ lab/
 │   ├── buffer-overflow: buffer overflow POC
 │   ├── frida: experimenting with frida
 │   ├── rs-no-std: experimenting with Rust in a no_std environment
-│   ├── util: utility code snippets
+│   └── util: utility code snippets
 └── windows/
     ├── rsrc: experimenting with .rsrc
     └── shellcode: shellcode POC
 ```
-I also wrote a couple of detailed blogposts about the buffer overflow and shellcode POCs:
+I also wrote a couple of detailed blog posts about the buffer overflow and shellcode POCs:
 
 - https://gemesa.dev/diving-into-shellcodes
 - https://gemesa.dev/shattering-the-stack-0
