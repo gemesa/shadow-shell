@@ -2,7 +2,6 @@
 
 shadow-shell is a cyber lab designed for:
 
-- learning AMD64 and ARM64 assembly
 - analyzing shellcode
 - exploring memory exploits
 - supporting malware analysis
@@ -33,16 +32,11 @@ arsenal/
 ```
 lab/
 ├── linux/
-│   ├── asm-hive/: ARM64 and x64 assembly snippets
-│   ├── buffer-overflow/: buffer overflow proof of concept
-│   ├── frida/: experimenting with frida
-│   ├── rs-no-std/: experimenting with Rust in a no_std environment
-│   └── util/: utility code snippets
+│   └── buffer-overflow/: buffer overflow proof of concept
 └── windows/
-    ├── rsrc/: experimenting with .rsrc
     └── shellcode/: shellcode proof of concept
 ```
-I also wrote a couple of detailed blog posts about the buffer overflow and shellcode POCs:
+Both POCs are documented in detail on my blog:
 
 - https://gemesa.dev/diving-into-shellcodes
 - https://gemesa.dev/shattering-the-stack-0
