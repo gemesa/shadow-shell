@@ -14,6 +14,19 @@ The repository contains two main parts:
 
 # How to build
 
+## Prerequisites
+
+```
+$ sudo dnf install mingw64-gcc
+$ sudo dnf install winetricks
+$ rustup target add x86_64-pc-windows-gnu
+$ sudo dnf install nasm
+$ pip install frida-tools
+$ sudo dnf install docker
+$ sudo systemctl start docker
+$ sudo systemctl enable docker
+```
+
 ## x64 codebase
 
 ```
@@ -46,6 +59,25 @@ arsenal/
 └── windows/
     └── shexec.c: Windows shellcode executor used as a reference while implementing shexec.s for different architectures
 ```
+
+```
+lab/
+├── linux/
+│   ├── asm-hive/: ARM64 and x64 assembly snippets
+│   ├── buffer-overflow: buffer overflow POC
+│   ├── frida: experimenting with frida
+│   ├── rs-no-std: experimenting with Rust in a no_std environment
+│   ├── util: utility code snippets
+└── windows/
+    ├── rsrc: experimenting with .rsrc
+    └── shellcode: shellcode POC
+```
+I also wrote a couple of detailed blogposts about the buffer overflow and shellcode POCs:
+
+- https://gemesa.dev/diving-into-shellcodes
+- https://gemesa.dev/shattering-the-stack-0
+- https://gemesa.dev/shattering-the-stack-1
+- https://gemesa.dev/shattering-the-stack-2
 
 # How to use
 
@@ -100,26 +132,6 @@ $ msfvenom -p windows/x64/messagebox -b \x00 -f raw -o win_shcode.bin
 ```
 
 Open `ProcMon` and `TCPView` then `shexec.exe win_shcode.bin`
-
-# Prerequisites
-
-```
-$ sudo dnf install mingw64-gcc
-$ sudo dnf install winetricks
-$ rustup target add x86_64-pc-windows-gnu
-$ sudo dnf install nasm
-$ pip install frida-tools
-$ sudo dnf install docker
-$ sudo systemctl start docker
-$ sudo systemctl enable docker
-
-```
-
-# My blog posts
-- https://gemesa.dev/diving-into-shellcodes
-- https://gemesa.dev/shattering-the-stack-0
-- https://gemesa.dev/shattering-the-stack-1
-- https://gemesa.dev/shattering-the-stack-2
 
 # References
 
