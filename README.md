@@ -66,7 +66,7 @@ $ make x64
 
 ## ARM64 codebase
 
-I have an x64 PC so to build and run ARM64 binaries I use an ARM64v8 Docker container. (An alternative solution could be using an ARM64 cross-compiler and QEMU.)
+I have an x64 PC so to build and run ARM64 binaries my preference is to use an ARM64v8 Docker container. Alternatively an ARM64 cross-compiler and QEMU could also be used (Docker is doing something similar under the hood). This setup has some limitations though as it does not implement `ptrace` so `strace` and `gdb` cannot be used.
 
 ```
 $ sudo docker build -t my-arm64-dev-env .
