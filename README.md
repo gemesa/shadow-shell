@@ -1,13 +1,90 @@
-# shadow-shell
+# Introduction
 
-A cyber lab designed for:
+shadow-shell is a cyber lab designed for:
 
 - learning AMD64 and ARM64 assembly
 - analyzing shellcode
 - exploring memory exploits
 - supporting malware analysis
 
-## Prerequisites
+The repository contains two main parts:
+
+- **arsenal**: command line tools to support malware analysis
+- **lab**: experimental code snippets, some are documented while others are not
+
+# How to build
+
+## x64 codebase
+
+```
+$ make
+```
+
+## ARM64 codebase
+
+I have an x64 PC so to build and run ARM64 binaries I use an ARM64v8 Docker container. (An alternative solution could be using an ARM64 cross-compiler and QEMU.)
+
+```
+$ sudo docker build -t my-arm64-dev-env .
+$ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
+# make arm
+```
+
+# Repository structure
+
+```
+arsenal/
+├── linux/
+│   ├── arm64/
+│   │   ├── shexec.s: Linux ARM64 shellcode executor (mostly I combine it with `strace` to get a quick high-level understanding of the shellcode behavior via the syscalls)
+│   │   ├── shcode_hello.s: Linux ARM64 shellcode which prints "Hello!"
+│   │   └── shcode_shell.s: Linux ARM64 shellcode which opens a shell
+│   │       example usage:
+│   │       ```
+│   │       # sudo docker build -t my-arm64-dev-env .
+│   │       $ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
+│   │       # make arm
+│   │       # ./build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin 
+│   │       Hello!
+│   │       # ./build/linux/arm64/shexec build/linux/arm64/shcode_shell.bin
+│   │       # id
+│   │       uid=0(root) gid=0(root) groups=0(root)
+│   │       # exit
+│   │       ```
+│   ├── x64/
+│   │   ├── shexec.s: Linux x64 shellcode executor
+│   │   └── shcode_hello.s: Linux x64 shellcode which prints "Hello, World!"
+│   │       example usage:
+│   │       ```
+│   │       $ make
+│   │       $ msfvenom -p linux/x64/exec CMD='echo \"Hello, World!\"' -f raw -o shellcode.bin
+│   │       $ ./build/linux/x64/shexec shellcode.bin                     
+│   │       file size: 57 bytes
+│   │       Hello, World!
+│   │       $ ./build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+│   │       file size: 57 bytes
+│   │       Hello, World!
+│   │       ```
+│   └── shexec.c: Linux shellcode executor used as reference while implementing shexec.s for different architectures
+│       example usage:
+│       ```
+│       $ gcc -S arsenal/linux/shexec.c -o arsenal/linux/shexec_gcc.s
+│        ```
+└── windows/
+    └── shexec.c: Windows shellcode executor used as reference while implementing shexec.s for different architectures
+        example usage:
+        ```
+        $ x86_64-w64-mingw32-gcc -S arsenal/windows/shexec.c -o arsenal/windows/shexec_gcc.s
+        ```
+        ```
+        $ make
+        $ msfvenom -p windows/x64/messagebox -b \x00 -f raw -o win_shcode.bin
+        $ wine build/windows/shexec.exe win_shcode.bin
+        ```
+
+```
+
+# Prerequisites
 
 ```
 $ sudo dnf install mingw64-gcc
@@ -21,13 +98,13 @@ $ sudo systemctl enable docker
 
 ```
 
-## My blog posts
+# My blog posts
 - https://gemesa.dev/diving-into-shellcodes
 - https://gemesa.dev/shattering-the-stack-0
 - https://gemesa.dev/shattering-the-stack-1
 - https://gemesa.dev/shattering-the-stack-2
 
-## References
+# References
 
 - https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md
 - https://wiki.osdev.org/Calling_Conventions
@@ -56,9 +133,6 @@ $ sudo systemctl enable docker
 - https://github.com/muhammet-mucahit/Security-Exercises
 - https://lettieri.iet.unipi.it/hacking/aslr-pie.pdf
 - https://reverseengineering.stackexchange.com/questions/19598/find-base-address-and-memory-size-of-program-debugged-in-gdb
-
-### ARM64
-
 - https://syscall.sh/
 - https://developer.arm.com/documentation
 - https://gist.github.com/luk6xff/9f8d2520530a823944355e59343eadc1
