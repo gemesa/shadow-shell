@@ -7,43 +7,12 @@ shadow-shell is a cyber lab designed for:
 - exploring memory exploits
 - supporting malware analysis
 
+# Repository structure
+
 The repository contains two main parts:
 
 - **arsenal**: command line tools to support malware analysis
 - **lab**: experimental code snippets, some are documented while others are not
-
-# How to build
-
-## Prerequisites
-
-```
-$ sudo dnf install mingw64-gcc
-$ sudo dnf install winetricks
-$ rustup target add x86_64-pc-windows-gnu
-$ sudo dnf install nasm
-$ pip install frida-tools
-$ sudo dnf install docker
-$ sudo systemctl start docker
-$ sudo systemctl enable docker
-```
-
-## x64 codebase
-
-```
-$ make
-```
-
-## ARM64 codebase
-
-I have an x64 PC so to build and run ARM64 binaries I use an ARM64v8 Docker container. (An alternative solution could be using an ARM64 cross-compiler and QEMU.)
-
-```
-$ sudo docker build -t my-arm64-dev-env .
-$ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
-# make arm
-```
-
-# Repository structure
 
 ```
 arsenal/
@@ -78,6 +47,37 @@ I also wrote a couple of detailed blogposts about the buffer overflow and shellc
 - https://gemesa.dev/shattering-the-stack-0
 - https://gemesa.dev/shattering-the-stack-1
 - https://gemesa.dev/shattering-the-stack-2
+
+# How to build
+
+## Prerequisites
+
+```
+$ sudo dnf install mingw64-gcc
+$ sudo dnf install winetricks
+$ rustup target add x86_64-pc-windows-gnu
+$ sudo dnf install nasm
+$ pip install frida-tools
+$ sudo dnf install docker
+$ sudo systemctl start docker
+$ sudo systemctl enable docker
+```
+
+## x64 codebase
+
+```
+$ make
+```
+
+## ARM64 codebase
+
+I have an x64 PC so to build and run ARM64 binaries I use an ARM64v8 Docker container. (An alternative solution could be using an ARM64 cross-compiler and QEMU.)
+
+```
+$ sudo docker build -t my-arm64-dev-env .
+$ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
+# make arm
+```
 
 # How to use
 
