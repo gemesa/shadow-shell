@@ -18,7 +18,7 @@ The repository contains two main parts:
 arsenal/
 ├── linux/
 │   ├── arm64/
-│   │   ├── shexec.s: Linux ARM64 shellcode executor (I mostly combine it with `strace` to get a quick high-level understanding of the shellcode behavior via the syscalls)
+│   │   ├── shexec.s: Linux ARM64 shellcode executor
 │   │   ├── shcode_hello.s: Linux ARM64 shellcode that prints "Hello!"
 │   │   └── shcode_shell.s: Linux ARM64 shellcode that opens a shell
 │   ├── x64/
@@ -83,6 +83,8 @@ $ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
 
 ## Linux ARM64
 
+### `shexec`
+
 ```
 # sudo docker build -t my-arm64-dev-env .
 $ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
@@ -95,6 +97,8 @@ uid=0(root) gid=0(root) groups=0(root)
 # exit
 ```
 ## Linux x64
+
+### `shexec`
 
 ```
 $ make x64
@@ -125,6 +129,8 @@ exit(0)                                 = ?
 ```
 
 ## Windows x64 (VM)
+
+### `shexec.exe`
 
 ```
 $ make x64
