@@ -39,50 +39,67 @@ arsenal/
 │   │   ├── shexec.s: Linux ARM64 shellcode executor (I mostly combine it with `strace` to get a quick high-level understanding of the shellcode behavior via the syscalls)
 │   │   ├── shcode_hello.s: Linux ARM64 shellcode that prints "Hello!"
 │   │   └── shcode_shell.s: Linux ARM64 shellcode that opens a shell
-│   │       example usage:
-│   │       ```
-│   │       # sudo docker build -t my-arm64-dev-env .
-│   │       $ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
-│   │       # make arm
-│   │       # ./build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin 
-│   │       Hello!
-│   │       # ./build/linux/arm64/shexec build/linux/arm64/shcode_shell.bin
-│   │       # id
-│   │       uid=0(root) gid=0(root) groups=0(root)
-│   │       # exit
-│   │       ```
 │   ├── x64/
 │   │   ├── shexec.s: Linux x64 shellcode executor
 │   │   └── shcode_hello.s: Linux x64 shellcode that prints "Hello, World!"
-│   │       example usage:
-│   │       ```
-│   │       $ make
-│   │       $ msfvenom -p linux/x64/exec CMD='echo \"Hello, World!\"' -f raw -o shellcode.bin
-│   │       $ ./build/linux/x64/shexec shellcode.bin                     
-│   │       file size: 57 bytes
-│   │       Hello, World!
-│   │       $ ./build/linux/x64/shexec build/linux/x64/shcode_hello.bin
-│   │       file size: 57 bytes
-│   │       Hello, World!
-│   │       ```
-│   └── shexec.c: Linux shellcode executor used as a reference while implementing **shexec.s** for different architectures
-│       example usage:
-│       ```
-│       $ gcc -S arsenal/linux/shexec.c -o arsenal/linux/shexec_gcc.s
-│       ```
+│   └── shexec.c: Linux shellcode executor used as a reference while implementing shexec.s for different architectures
 └── windows/
-    └── shexec.c: Windows shellcode executor used as a reference while implementing **shexec.s** for different architectures
-        example usage:
-        ```
-        $ x86_64-w64-mingw32-gcc -S arsenal/windows/shexec.c -o arsenal/windows/shexec_gcc.s
-        ```
-        ```
-        $ make
-        $ msfvenom -p windows/x64/messagebox -b \x00 -f raw -o win_shcode.bin
-        $ wine build/windows/shexec.exe win_shcode.bin
-        ```
+    └── shexec.c: Windows shellcode executor used as a reference while implementing shexec.s for different architectures
+```
+
+# How to use
+
+## Linux ARM64:
 
 ```
+# sudo docker build -t my-arm64-dev-env .
+$ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
+# make arm
+# ./build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
+Hello!
+# ./build/linux/arm64/shexec build/linux/arm64/shcode_shell.bin
+# id
+uid=0(root) gid=0(root) groups=0(root)
+# exit
+```
+## Linux x64:
+
+```
+$ make
+$ ./build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+file size: 57 bytes
+Hello, World!
+$ msfvenom -p linux/x64/exec CMD='echo \"Hello, World!\"' -f raw -o shellcode.bin
+$ ./build/linux/x64/shexec shellcode.bin
+file size: 57 bytes
+Hello, World!
+$ strace ./build/linux/x64/shexec build/linux/x64/shcode_hello.bin 
+...
+openat(AT_FDCWD, "build/linux/x64/shcode_hello.bin", O_RDONLY) = 3
+fstat(3, {st_mode=S_IFREG|0755, st_size=57, ...}) = 0
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}) = 0
+getrandom("\xae\x28\x5d\xfd\xd1\xae\x82\x68", 8, GRND_NONBLOCK) = 8
+brk(NULL)                               = 0x55c7bbc4d000
+brk(0x55c7bbc6e000)                     = 0x55c7bbc6e000
+write(1, "file size: 57 bytes\n", 20file size: 57 bytes
+)   = 20
+mmap(NULL, 57, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f94405b3000
+read(3, "H\307\300\1\0\0\0H\307\307\1\0\0\0H\2155\25\0\0\0H\307\302\17\0\0\0\17\5H\307"..., 57) = 57
+close(3)                                = 0
+mprotect(0x7f94405b3000, 57, PROT_READ|PROT_WRITE|PROT_EXEC) = 0
+write(1, "Hello, World!\n\0", 15Hello, World!
+)       = 15
+exit(0)                                 = ?
+```
+
+## Windows x64 (VM):
+
+```
+$ make
+$ msfvenom -p windows/x64/messagebox -b \x00 -f raw -o win_shcode.bin
+```
+
+Open `ProcMon` and `TCPView` then `shexec.exe win_shcode.bin`
 
 # Prerequisites
 
