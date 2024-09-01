@@ -36,9 +36,9 @@ $ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
 arsenal/
 ├── linux/
 │   ├── arm64/
-│   │   ├── shexec.s: Linux ARM64 shellcode executor (mostly I combine it with `strace` to get a quick high-level understanding of the shellcode behavior via the syscalls)
-│   │   ├── shcode_hello.s: Linux ARM64 shellcode which prints "Hello!"
-│   │   └── shcode_shell.s: Linux ARM64 shellcode which opens a shell
+│   │   ├── shexec.s: Linux ARM64 shellcode executor (I mostly combine it with `strace` to get a quick high-level understanding of the shellcode behavior via the syscalls)
+│   │   ├── shcode_hello.s: Linux ARM64 shellcode that prints "Hello!"
+│   │   └── shcode_shell.s: Linux ARM64 shellcode that opens a shell
 │   │       example usage:
 │   │       ```
 │   │       # sudo docker build -t my-arm64-dev-env .
@@ -53,7 +53,7 @@ arsenal/
 │   │       ```
 │   ├── x64/
 │   │   ├── shexec.s: Linux x64 shellcode executor
-│   │   └── shcode_hello.s: Linux x64 shellcode which prints "Hello, World!"
+│   │   └── shcode_hello.s: Linux x64 shellcode that prints "Hello, World!"
 │   │       example usage:
 │   │       ```
 │   │       $ make
@@ -65,13 +65,13 @@ arsenal/
 │   │       file size: 57 bytes
 │   │       Hello, World!
 │   │       ```
-│   └── shexec.c: Linux shellcode executor used as reference while implementing shexec.s for different architectures
+│   └── shexec.c: Linux shellcode executor used as a reference while implementing **shexec.s** for different architectures
 │       example usage:
 │       ```
 │       $ gcc -S arsenal/linux/shexec.c -o arsenal/linux/shexec_gcc.s
-│        ```
+│       ```
 └── windows/
-    └── shexec.c: Windows shellcode executor used as reference while implementing shexec.s for different architectures
+    └── shexec.c: Windows shellcode executor used as a reference while implementing **shexec.s** for different architectures
         example usage:
         ```
         $ x86_64-w64-mingw32-gcc -S arsenal/windows/shexec.c -o arsenal/windows/shexec_gcc.s
