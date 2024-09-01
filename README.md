@@ -25,22 +25,22 @@ arsenal/
 │   ├── x64/
 │   │   ├── shexec.s: Linux x64 shellcode executor
 │   │   └── shcode_hello.s: Linux x64 shellcode that prints "Hello, World!"
-│   └── shexec.c: Linux shellcode executor used as a reference while implementing shexec.s for different architectures
+│   └── shexec.c: Linux shellcode executor (used as a reference while implementing shexec.s for different architectures)
 └── windows/
-    └── shexec.c: Windows shellcode executor used as a reference while implementing shexec.s for different architectures
+    └── shexec.c: Windows shellcode executor
 ```
 
 ```
 lab/
 ├── linux/
 │   ├── asm-hive/: ARM64 and x64 assembly snippets
-│   ├── buffer-overflow/: buffer overflow POC
+│   ├── buffer-overflow/: buffer overflow proof of concept
 │   ├── frida/: experimenting with frida
 │   ├── rs-no-std/: experimenting with Rust in a no_std environment
 │   └── util/: utility code snippets
 └── windows/
     ├── rsrc/: experimenting with .rsrc
-    └── shellcode/: shellcode POC
+    └── shellcode/: shellcode proof of concept
 ```
 I also wrote a couple of detailed blog posts about the buffer overflow and shellcode POCs:
 
