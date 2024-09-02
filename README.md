@@ -49,7 +49,7 @@ Both POCs are documented in detail on my blog:
 
 ## Prerequisites
 
-```console
+```
 $ sudo dnf install mingw64-gcc
 $ sudo dnf install winetricks
 $ rustup target add x86_64-pc-windows-gnu
