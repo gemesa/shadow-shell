@@ -49,7 +49,7 @@ Both POCs are documented in detail on my blog:
 
 ## Prerequisites
 
-```
+```console
 $ sudo dnf install mingw64-gcc
 $ sudo dnf install winetricks
 $ rustup target add x86_64-pc-windows-gnu
@@ -70,7 +70,7 @@ $ make x64
 
 I have an x64 PC so to quickly build and run ARM64 binaries my preference is to use an ARM64v8 Docker container. Alternatively an ARM64 cross-compiler and QEMU could also be used (Docker is doing something similar under the hood). This setup has some limitations though as it does not implement `ptrace` so `strace` and `gdb` cannot be used.
 
-```
+```console
 $ sudo docker build -t my-arm64-dev-env .
 $ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
 # make arm64
@@ -84,7 +84,7 @@ If you have a Raspberry Pi you can use it with all the debugging tools including
 
 ### `shexec`
 
-```
+```console
 $ make arm64
 $ ./build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
 file size: 52 bytes
@@ -118,7 +118,7 @@ exit(0)                                 = ?
 
 ### `shexec`
 
-```
+```console
 $ make x64
 $ ./build/linux/x64/shexec build/linux/x64/shcode_hello.bin
 file size: 57 bytes
@@ -150,7 +150,7 @@ exit(0)                                 = ?
 
 ### `shexec.exe`
 
-```
+```console
 $ make x64
 $ msfvenom -p windows/x64/messagebox -b \x00 -f raw -o win_shcode.bin
 ```
