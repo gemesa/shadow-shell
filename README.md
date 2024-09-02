@@ -125,7 +125,7 @@ write(1, "Hello, World!\n\0", 15Hello, World!
 exit(0)                                 = ?
 ```
 
-## Windows x64 (VM)
+## Windows x64
 
 ### `shexec.exe`
 
