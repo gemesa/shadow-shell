@@ -14,6 +14,8 @@ The repository contains two main parts:
     - `shexec`: a shellcode executor that can be combined with other tools like `strace` (Linux), `ProcMon` and `TCPView` (Windows) to analyze shellcode functionality
 - **lab**: experimental code snippets, some are documented while others are not
 
+:warning: You should **never** execute untrusted shellcode on your system. Use a hardened VM or container for this purpose.
+
 ```
 arsenal/
 ├── linux/
