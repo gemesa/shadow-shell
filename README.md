@@ -68,13 +68,15 @@ $ make x64
 
 ## ARM64 codebase
 
-I have an x64 PC so to build and run ARM64 binaries my preference is to use an ARM64v8 Docker container. Alternatively an ARM64 cross-compiler and QEMU could also be used (Docker is doing something similar under the hood). This setup has some limitations though as it does not implement `ptrace` so `strace` and `gdb` cannot be used.
+I have an x64 PC so to quickly build and run ARM64 binaries my preference is to use an ARM64v8 Docker container. Alternatively an ARM64 cross-compiler and QEMU could also be used (Docker is doing something similar under the hood). This setup has some limitations though as it does not implement `ptrace` so `strace` and `gdb` cannot be used.
 
 ```
 $ sudo docker build -t my-arm64-dev-env .
 $ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
 # make arm64
 ```
+
+If you have a Raspberry Pi you can use it with all the debugging tools including `strace` and `gdb`.
 
 # How to use
 
@@ -83,15 +85,34 @@ $ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
 ### `shexec`
 
 ```
-# sudo docker build -t my-arm64-dev-env .
-$ sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
-# make arm64
-# ./build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
+$ make arm64
+$ ./build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
+file size: 52 bytes
 Hello!
-# ./build/linux/arm64/shexec build/linux/arm64/shcode_shell.bin
-# id
-uid=0(root) gid=0(root) groups=0(root)
-# exit
+$ echo $$
+1918
+$ ./build/linux/arm64/shexec build/linux/arm64/shcode_shell.bin
+file size: 40 bytes
+$ echo $$
+19341
+$ exit
+$ strace ./build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
+...
+openat(AT_FDCWD, "build/linux/arm64/shcode_hello.bin", O_RDONLY) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0755, st_size=52, ...}, AT_EMPTY_PATH) = 0
+newfstatat(1, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}, AT_EMPTY_PATH) = 0
+getrandom("\x20\xc3\xbe\x6a\x9d\x68\x76\xf9", 8, GRND_NONBLOCK) = 8
+brk(NULL)                               = 0x55754e8000
+brk(0x5575509000)                       = 0x5575509000
+write(1, "file size: 52 bytes\n", 20file size: 52 bytes
+)   = 20
+mmap(NULL, 52, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7facfe6000
+read(3, "\1\251\214\322\201\215\255\362\341-\304\362A\1\340\362\341\217\37\370 \0\200\322\341\3\0\221\342\0\200\322"..., 52) = 52
+close(3)                                = 0
+mprotect(0x7facfe6000, 52, PROT_READ|PROT_WRITE|PROT_EXEC) = 0
+write(1, "Hello!\n", 7Hello!
+)                 = 7
+exit(0)                                 = ?
 ```
 ## Linux x64
 
