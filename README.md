@@ -11,7 +11,7 @@ shadow-shell is a cyber lab designed for:
 The repository contains two main parts:
 
 - **arsenal**: command line tools to support malware analysis
-    - `shexec`: a shellcode executor that can be combined with other tools like `strace` (Linux), `ProcMon` and `TCPView` (Windows) to analyze shellcode functionality
+    - `shexec`: a shellcode runner that can be combined with other tools like `strace` (Linux), `ProcMon` and `TCPView` (Windows) to analyze shellcode functionality
 - **lab**: experimental code snippets, some are documented while others are not
 
 :warning: You should **never** execute untrusted shellcode on your system. Use a hardened VM or container for this purpose.
@@ -20,15 +20,15 @@ The repository contains two main parts:
 arsenal/
 ├── linux/
 │   ├── arm64/
-│   │   ├── shexec.s: Linux ARM64 shellcode executor
+│   │   ├── shexec.s: Linux ARM64 shellcode runner
 │   │   ├── shcode_hello.s: Linux ARM64 shellcode that prints "Hello!"
 │   │   └── shcode_shell.s: Linux ARM64 shellcode that opens a shell
 │   ├── x64/
-│   │   ├── shexec.s: Linux x64 shellcode executor
+│   │   ├── shexec.s: Linux x64 shellcode runner
 │   │   └── shcode_hello.s: Linux x64 shellcode that prints "Hello, World!"
-│   └── shexec.c: Linux shellcode executor (used as a reference while implementing shexec.s for different architectures)
+│   └── shexec.c: Linux shellcode runner (used as a reference while implementing shexec.s for different architectures)
 └── windows/
-    └── shexec.c: Windows shellcode executor
+    └── shexec.c: Windows shellcode runner
 ```
 
 ```
