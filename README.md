@@ -40,10 +40,10 @@ lab/
 ```
 Both POCs are documented in detail on my blog:
 
-- https://gemesa.dev/diving-into-shellcodes
-- https://gemesa.dev/shattering-the-stack-0
-- https://gemesa.dev/shattering-the-stack-1
-- https://gemesa.dev/shattering-the-stack-2
+- https://shadowshell.io/diving-into-shellcodes
+- https://shadowshell.io/shattering-the-stack-0
+- https://shadowshell.io/shattering-the-stack-1
+- https://shadowshell.io/shattering-the-stack-2
 
 # How to build
 
