@@ -34,9 +34,9 @@ arsenal/
 ```
 lab/
 ├── linux/
-│   └── buffer-overflow/: buffer overflow proof of concept
+│   └── buffer-overflow/: proof of concept for a buffer overflow with the goal of executing shellcode
 └── windows/
-    └── shellcode/: shellcode proof of concept
+    └── shellcode/: proof of concept for basic shellcode execution
 ```
 Both POCs are documented in detail on my blog:
 
