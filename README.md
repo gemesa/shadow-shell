@@ -47,7 +47,7 @@ Both POCs are documented in detail on my blog:
 
 # Workflow
 
-## Shellcode Analysis
+## Shellcode analysis
 
 1. **Emulate the shellcode**  
    Use an emulator like [Qiling](https://github.com/qilingframework/qiling) to analyze the shellcode.
