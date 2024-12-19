@@ -4,15 +4,22 @@ $(shell mkdir -p $(BUILDDIR))
 $(shell mkdir -p $(BUILDDIR)/linux)
 $(shell mkdir -p $(BUILDDIR)/linux/x64)
 $(shell mkdir -p $(BUILDDIR)/linux/arm64)
+$(shell mkdir -p $(BUILDDIR)/linux/arm64x)
 $(shell mkdir -p $(BUILDDIR)/windows)
 
-.PHONY: arm64 x64 clean cargo-build
+.PHONY: arm64 arm64x x64 clean cargo-build
 
 arm64: \
 $(BUILDDIR)/linux/arm64/shexec \
 $(BUILDDIR)/linux/arm64/nocrt-hello \
 $(BUILDDIR)/linux/arm64/shcode_hello \
 $(BUILDDIR)/linux/arm64/shcode_shell \
+
+arm64x: \
+$(BUILDDIR)/linux/arm64x/shexec \
+$(BUILDDIR)/linux/arm64x/nocrt-hello \
+$(BUILDDIR)/linux/arm64x/shcode_hello \
+$(BUILDDIR)/linux/arm64x/shcode_shell \
 
 x64: \
 cargo-build \
@@ -62,6 +69,23 @@ $(BUILDDIR)/linux/arm64/shcode_shell: arsenal/linux/arm64/shcode_shell.s
 	as $< -g -o $(BUILDDIR)/linux/arm64/shcode_shell.o
 	ld $(BUILDDIR)/linux/arm64/shcode_shell.o -g -o $@
 	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode_shell.bin
+
+$(BUILDDIR)/linux/arm64x/shexec: arsenal/linux/arm64/shexec.s
+	aarch64-linux-gnu-gcc $< -g -o $@ -pie -L /usr/aarch64-redhat-linux/sys-root/fc41/lib64 -L /usr/aarch64-redhat-linux/sys-root/fc41/lib --sysroot=/usr/aarch64-redhat-linux/sys-root/fc41
+
+$(BUILDDIR)/linux/arm64x/nocrt-hello: lab/linux/asm-hive/arm64/nocrt-hello.s
+	aarch64-linux-gnu-as $< -g -o $(BUILDDIR)/linux/arm64x/nocrt-hello.o
+	aarch64-linux-gnu-ld $(BUILDDIR)/linux/arm64x/nocrt-hello.o -g -o $@
+
+$(BUILDDIR)/linux/arm64x/shcode_hello: arsenal/linux/arm64/shcode_hello.s
+	aarch64-linux-gnu-as $< -g -o $(BUILDDIR)/linux/arm64x/shcode_hello.o
+	aarch64-linux-gnu-ld $(BUILDDIR)/linux/arm64x/shcode_hello.o -g -o $@
+	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64x/shcode_hello.bin
+
+$(BUILDDIR)/linux/arm64x/shcode_shell: arsenal/linux/arm64/shcode_shell.s
+	aarch64-linux-gnu-as $< -g -o $(BUILDDIR)/linux/arm64x/shcode_shell.o
+	aarch64-linux-gnu-ld $(BUILDDIR)/linux/arm64x/shcode_shell.o -g -o $@
+	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64x/shcode_shell.bin
 
 $(BUILDDIR)/linux/x64/crt-hello: lab/linux/asm-hive/x64/crt-hello.s
 	gcc $< -g -o $@

@@ -108,6 +108,12 @@ file size: 52 bytes
 Hello!
 ```
 
+Simply use the following command (ensure that the ARM64 cross-compiler is installed):
+
+```
+$ make arm64x
+```
+
 If you have a Raspberry Pi you can use it with all the debugging tools including `strace` and `gdb`.
 
 # How to use
