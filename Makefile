@@ -8,9 +8,6 @@ $(shell mkdir -p $(BUILDDIR)/windows)
 
 .PHONY: arm64 x64 clean cargo-build
 
-# sudo docker build -t my-arm64-dev-env .
-# sudo docker run --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
-# call `make arm64` in the arm64 container
 arm64: \
 $(BUILDDIR)/linux/arm64/shexec \
 $(BUILDDIR)/linux/arm64/nocrt-hello \
