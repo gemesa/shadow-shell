@@ -242,3 +242,4 @@ Open `ProcMon` and `TCPView` then:
 - https://developer.arm.com/documentation
 - https://gist.github.com/luk6xff/9f8d2520530a823944355e59343eadc1
 - https://www.exploit-db.com/exploits/47048
+- https://stackoverflow.com/a/18483795
