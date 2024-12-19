@@ -82,7 +82,7 @@ I have an x64 PC so to quickly build and run ARM64 binaries my preference is to 
 
 ```
 $ sudo docker build --platform=linux/arm64 -t my-arm64-dev-env .
-$ sudo docker run --platform=linux/arm64 --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
+$ sudo docker run --platform=linux/arm64 --user $(id -u):$(id -g) --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
 # make arm64
 ```
 
