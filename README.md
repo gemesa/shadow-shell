@@ -78,12 +78,34 @@ $ make x64
 
 ## ARM64 codebase
 
-I have an x64 PC so to quickly build and run ARM64 binaries my preference is to use an ARM64v8 Docker container. Alternatively an ARM64 cross-compiler and QEMU could also be used (Docker is doing something similar under the hood). This setup has some limitations though as it does not implement `ptrace` so `strace` and `gdb` cannot be used.
+I have an x64 PC so to quickly build and run ARM64 binaries my preference is to use an ARM64v8 Docker container. This setup has some limitations though as it does not implement `ptrace` so `strace` and `gdb` cannot be used.
 
 ```
 $ sudo docker build --platform=linux/arm64 -t arm64-env .
 $ sudo docker run --platform=linux/arm64 --user $(id -u):$(id -g) --rm -it -v "$(pwd)":/workspace arm64-env /bin/bash
 # make arm64
+```
+
+Alternatively an ARM64 cross-compiler and QEMU could also be used (Docker is doing something similar under the hood).
+
+```
+$ dnf search *aarch64*
+$ sudo dnf install gcc-aarch64-linux-gnu
+$ sudo dnf install binutils-aarch64-linux-gnu
+$ sudo dnf install qemu-system-aarch64
+$ sudo dnf install qemu-system-aarch64-core
+$ sudo dnf install qemu-user-static-aarch64
+$ sudo dnf install sysroot-aarch64-fc41-glibc
+```
+
+```
+$ aarch64-linux-gnu-gcc -L /usr/aarch64-redhat-linux/sys-root/fc41/lib64 -L /usr/aarch64-redhat-linux/sys-root/fc41/lib --sysroot=/usr/aarch64-redhat-linux/sys-root/fc41 arsenal/linux/arm64/shexec.s -o shexec
+$ aarch64-linux-gnu-as arsenal/linux/arm64/shcode_hello.s -o shcode_hello.o
+$ aarch64-linux-gnu-ld shcode_hello.o -o shcode_hello
+$ llvm-objcopy -O binary --only-section=.text shcode_hello shcode_hello.bin
+$ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr shexec shcode_hello.bin
+file size: 52 bytes
+Hello!
 ```
 
 If you have a Raspberry Pi you can use it with all the debugging tools including `strace` and `gdb`.
