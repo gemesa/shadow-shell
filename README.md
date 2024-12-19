@@ -81,8 +81,8 @@ $ make x64
 I have an x64 PC so to quickly build and run ARM64 binaries my preference is to use an ARM64v8 Docker container. Alternatively an ARM64 cross-compiler and QEMU could also be used (Docker is doing something similar under the hood). This setup has some limitations though as it does not implement `ptrace` so `strace` and `gdb` cannot be used.
 
 ```
-$ sudo docker build --platform=linux/arm64 -t my-arm64-dev-env .
-$ sudo docker run --platform=linux/arm64 --user $(id -u):$(id -g) --rm -it -v "$(pwd)":/workspace my-arm64-dev-env /bin/bash
+$ sudo docker build --platform=linux/arm64 -t arm64-env .
+$ sudo docker run --platform=linux/arm64 --user $(id -u):$(id -g) --rm -it -v "$(pwd)":/workspace arm64-env /bin/bash
 # make arm64
 ```
 
