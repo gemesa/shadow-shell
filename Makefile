@@ -63,12 +63,12 @@ $(BUILDDIR)/linux/arm64/nocrt-hello: lab/linux/asm-hive/arm64/nocrt-hello.s
 $(BUILDDIR)/linux/arm64/shcode_hello: arsenal/linux/arm64/shcode_hello.s
 	as $< -g -o $(BUILDDIR)/linux/arm64/shcode_hello.o
 	ld $(BUILDDIR)/linux/arm64/shcode_hello.o -g -o $@
-	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode_hello.bin
+	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode_hello.bin
 
 $(BUILDDIR)/linux/arm64/shcode_shell: arsenal/linux/arm64/shcode_shell.s
 	as $< -g -o $(BUILDDIR)/linux/arm64/shcode_shell.o
 	ld $(BUILDDIR)/linux/arm64/shcode_shell.o -g -o $@
-	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode_shell.bin
+	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode_shell.bin
 
 $(BUILDDIR)/linux/arm64x/shexec: arsenal/linux/arm64/shexec.s
 	aarch64-linux-gnu-gcc $< -g -o $@ -pie -L /usr/aarch64-redhat-linux/sys-root/fc41/lib64 -L /usr/aarch64-redhat-linux/sys-root/fc41/lib --sysroot=/usr/aarch64-redhat-linux/sys-root/fc41
@@ -156,7 +156,7 @@ $(BUILDDIR)/linux/x64/shexec: arsenal/linux/x64/shexec.s
 $(BUILDDIR)/linux/x64/shcode_hello: arsenal/linux/x64/shcode_hello.s
 	as $< -g -o $(BUILDDIR)/linux/x64/shcode_hello.o
 	ld $(BUILDDIR)/linux/x64/shcode_hello.o -g -o $@
-	objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/x64/shcode_hello.bin
+	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/x64/shcode_hello.bin
 
 $(BUILDDIR)/windows/msf-msg.exe: lab/windows/shellcode/shc.c
 	x86_64-w64-mingw32-gcc $< -g -o $@

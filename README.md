@@ -66,6 +66,7 @@ Both POCs are documented in detail on my blog:
 $ sudo dnf install docker
 $ sudo dnf install mingw64-gcc
 $ sudo dnf install nasm
+$ sudo dnf install llvm
 $ pip install frida-tools
 $ rustup target add x86_64-pc-windows-gnu
 ```
