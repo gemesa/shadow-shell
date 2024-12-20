@@ -10,7 +10,7 @@ message:
 	.asciz "Hello\n"
 
 main_:
-	mov  $message, %rdi  # arg0 - const char *string
+	lea message(%rip), %rdi  # arg0 - const char *string
 	call puts
 	xor  %eax, %eax      # set return value to 0
 	ret
@@ -18,7 +18,7 @@ main_:
 .intel_syntax noprefix
 
 main:
-	mov  rdi, offset message
+	lea rdi, [rip + message]
 	call puts
 	xor  eax, eax
 	ret

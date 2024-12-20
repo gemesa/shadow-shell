@@ -88,7 +88,7 @@ $(BUILDDIR)/linux/arm64x/shcode_shell: arsenal/linux/arm64/shcode_shell.s
 	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64x/shcode_shell.bin
 
 $(BUILDDIR)/linux/x64/crt-hello: lab/linux/asm-hive/x64/crt-hello.s
-	gcc $< -g -o $@
+	gcc $< -fPIE -pie -g -o $@
 
 $(BUILDDIR)/linux/x64/crt-stack: lab/linux/asm-hive/x64/crt-stack.s
 	gcc $< -g -o $@
