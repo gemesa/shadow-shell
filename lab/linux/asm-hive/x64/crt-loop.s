@@ -16,7 +16,7 @@ main_:
 	sub  $16, %rsp
 
 loop_start_:
-	mov  $message, %edi
+	lea message(%rip), %rdi
 	call puts
 	cmpl $9, -4(%rbp)
 	je   loop_end
@@ -38,7 +38,7 @@ main:
 	sub  rsp, 16
 
 loop_start:
-	mov  edi, offset message
+	lea rdi, [rip + message]
 	call puts
 	cmp  dword ptr [rbp-4], 9
 	je   loop_end
