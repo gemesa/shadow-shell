@@ -60,20 +60,20 @@ main_:
 	mov  $10, %edi
 	mov  $11, %esi
 	call sum
-	mov  $format_string, %edi
+	lea  format_string(%rip), %rdi
 	mov  %eax, %esi
 	call printf
 	mov  $10, %edi
 	mov  $11, %esi
 	call mul
-	mov  $format_string, %edi
+	lea  format_string(%rip), %rdi
 	mov  %eax, %esi
 	call printf
 	xor  %eax, %eax
 	mov  $10, %edi
 	mov  $11, %esi
 	call calc
-	mov  $format_string, %edi
+	lea  format_string(%rip), %rdi
 	mov  %eax, %esi
 	call printf
 	pop  %rbp
@@ -132,20 +132,20 @@ main:
 	mov  edi, 10
 	mov  esi, 11
 	call sum
-	mov  edi, offset format_string
+	lea  rdi, [rip + format_string]
 	mov  esi, eax
 	call printf
 	mov  edi, 10
 	mov  esi, 11
 	call mul
-	mov  edi, offset format_string
+	lea  rdi, [rip + format_string]
 	mov  esi, eax
 	call printf
 	xor  eax, eax
 	mov  edi, 10
 	mov  esi, 11
 	call calc
-	mov  edi, offset format_string
+	lea  rdi, [rip + format_string]
 	mov  esi, eax
 	call printf
 	pop  rbp

@@ -91,7 +91,7 @@ $(BUILDDIR)/linux/x64/crt-hello: lab/linux/asm-hive/x64/crt-hello.s
 	gcc $< -fPIE -pie -g -o $@
 
 $(BUILDDIR)/linux/x64/crt-stack: lab/linux/asm-hive/x64/crt-stack.s
-	gcc $< -g -o $@
+	gcc $< -fPIE -pie -g -o $@
 
 $(BUILDDIR)/linux/x64/nocrt-hello: lab/linux/asm-hive/x64/nocrt-hello.s
 	as $< -g -o $(BUILDDIR)/linux/x64/nocrt-hello.o
