@@ -9,5 +9,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Install prerequisites
+        run: rustup target add x86_64-pc-windows-gnu
+
       - name: Build
         run: make x64
