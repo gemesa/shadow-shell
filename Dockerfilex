@@ -1,0 +1,10 @@
+FROM fedora:latest
+
+RUN dnf upgrade --refresh -y
+RUN dnf install make -y
+RUN dnf install llvm -y
+RUN dnf install gcc-aarch64-linux-gnu -y
+RUN dnf install binutils-aarch64-linux-gnu -y
+RUN dnf install sysroot-aarch64-fc41-glibc -y
+
+WORKDIR /workspace

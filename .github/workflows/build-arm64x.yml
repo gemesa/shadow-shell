@@ -1,0 +1,21 @@
+name: build (arm64x)
+
+on: [push]
+
+jobs:
+  build-arm64x:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Pull AMD64 image
+      run: |
+        docker pull gemesa/arm64x:latest
+        
+    - name: Run AMD64 container
+      run: |
+        docker run \
+          --rm \
+          -v "${{ github.workspace }}":/workspace \
+          gemesa/arm64x:latest \
+          make arm64x
