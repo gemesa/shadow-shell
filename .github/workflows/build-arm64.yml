@@ -15,14 +15,14 @@ jobs:
     - name: Set up Docker buildx
       uses: docker/setup-buildx-action@v1
 
-    - name: Build ARM64 image
+    - name: Pull ARM64 image
       run: |
-        docker build --platform=linux/arm64 -t arm64-env .
+        docker pull gemesa/arm64:latest
         
     - name: Run ARM64 container
       run: |
         docker run --platform=linux/arm64 \
           --rm \
           -v "${{ github.workspace }}":/workspace \
-          arm64-env \
+          gemesa/arm64:latest \
           make arm64
