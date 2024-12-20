@@ -21,7 +21,8 @@ main_:
 loop_:
 	lea  format(%rip), %rdi
 	movl -4(%rbp), %esi
-	lea  array(, %rsi, 4), %rdx
+	lea array(%rip), %rdx      # get array base address relative to RIP
+	lea (%rdx,%rsi,4), %rdx    # then do the indexed addressing
 	mov  (%rdx), %rdx
 	xor  %eax, %eax   # we dont pass any parameters in a vector register --> set %al to 0
 	call printf
@@ -47,7 +48,8 @@ main:
 loop:
 	lea  rdi, [rip+format]
 	mov  esi, dword ptr [rbp-4]
-	lea  rdx, [array+rsi*4]
+	lea rdx, [rip + array]     # get array base address
+	lea rdx, [rdx + rsi*4]     # tyhen do the indexed addressing
 	mov  rdx, [rdx]
 	xor  eax, eax
 	call printf

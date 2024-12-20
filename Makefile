@@ -124,7 +124,7 @@ $(BUILDDIR)/linux/x64/crt-loop: lab/linux/asm-hive/x64/crt-loop.s
 	gcc $< -fPIE -pie -g -o $@
 
 $(BUILDDIR)/linux/x64/crt-lea-array: lab/linux/asm-hive/x64/crt-lea-array.s
-	gcc $< -g -o $@
+	gcc $< -fPIE -pie -g -o $@
 
 $(BUILDDIR)/linux/x64/crt-args: lab/linux/asm-hive/x64/crt-args.s
 	gcc $< -g -o $@
