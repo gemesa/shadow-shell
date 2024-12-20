@@ -14,7 +14,7 @@ main_:
 	mov  $1, %edi
 	mov  $2, %esi
 	call min
-	mov  $format_string, %edi
+	lea  format_string(%rip), %rdi
 	mov  %eax, %esi
 	call printf
 	xor  %eax, %eax
@@ -42,7 +42,7 @@ main:
 	mov  edi, 1
 	mov  esi, 2
 	call min
-	mov  edi, offset format_string
+	lea  rdi, [rip + format_string]
 	mov  esi, eax
 	call printf
 	xor  eax, eax

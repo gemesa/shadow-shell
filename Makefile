@@ -118,7 +118,7 @@ $(BUILDDIR)/linux/x64/nocrt-args: lab/linux/asm-hive/x64/nocrt-args.s
 	ld $(BUILDDIR)/linux/x64/nocrt-args.o -g -o $@
 
 $(BUILDDIR)/linux/x64/crt-cmp: lab/linux/asm-hive/x64/crt-cmp.s
-	gcc $< -g -o $@
+	gcc $< -fPIE -pie -g -o $@
 
 $(BUILDDIR)/linux/x64/crt-loop: lab/linux/asm-hive/x64/crt-loop.s
 	gcc $< -g -o $@
