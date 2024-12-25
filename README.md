@@ -105,6 +105,8 @@ $ sudo dnf install qemu-user-static-aarch64
 $ sudo dnf install sysroot-aarch64-fc41-glibc
 ```
 
+Quick guide:
+
 ```
 $ aarch64-linux-gnu-gcc -L /usr/aarch64-redhat-linux/sys-root/fc41/lib64 -L /usr/aarch64-redhat-linux/sys-root/fc41/lib --sysroot=/usr/aarch64-redhat-linux/sys-root/fc41 arsenal/linux/arm64/shexec.s -o shexec
 $ aarch64-linux-gnu-as arsenal/linux/arm64/shcode_hello.s -o shcode_hello.o
@@ -113,9 +115,23 @@ $ llvm-objcopy -O binary --only-section=.text shcode_hello shcode_hello.bin
 $ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr shexec shcode_hello.bin
 file size: 52 bytes
 Hello!
+$ strace qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr shexec shcode_hello.bin
+...
+mprotect(0x7f4956b7c000, 4096, PROT_READ) = 0
+write(1, "Hello!\n", 7Hello!
+)                 = 7
+rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) = 0
+exit_group(0)                           = ?
++++ exited with 0 +++
+$ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr -g 1234 shexec shcode_hello.bin &
+$ gdb
+gef➤  set architecture aarch64
+gef➤  target remote localhost:1234
+(remote) gef➤ b _start
+(remote) gef➤ c
 ```
 
-Simply use the following command (ensure that the ARM64 cross-compiler is installed):
+To build the ARM64 binaries simply use the following command (ensure that the ARM64 cross-compiler is installed):
 
 ```
 $ make arm64x
