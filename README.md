@@ -14,7 +14,7 @@ The repository contains two main parts:
     - `shexec`: a shellcode runner that can be combined with other tools like `strace` (Linux), `ProcMon` and `TCPView` (Windows) to analyze shellcode functionality
 - **lab**: experimental code snippets, some are documented while others are not
 
-:warning: You should **never** execute untrusted shellcode on your system. Use a hardened VM or container for this purpose.
+:warning: You should **never** execute untrusted shellcode on your system. Use an emulator, hardened VM or container for this purpose.
 
 ```
 arsenal/
@@ -79,7 +79,7 @@ $ make x64
 
 ## ARM64 codebase
 
-I have an x64 PC so to quickly build and run ARM64 binaries my preference is to use an ARM64v8 Docker container. This setup has some limitations though as it does not implement `ptrace` so `strace` and `gdb` cannot be used.
+I have an x64 PC so to quickly build ARM64 binaries my preference is to use an ARM64v8 Docker container.
 
 ```
 $ sudo docker build --platform=linux/arm64 -t arm64 .
@@ -93,7 +93,7 @@ The image is also available on Docker Hub:
 $ docker pull gemesa/arm64:latest
 ```
 
-Alternatively an ARM64 cross-compiler and QEMU could also be used (Docker is doing something similar under the hood).
+Alternatively an ARM64 cross-compiler could also be used.
 
 ```
 $ dnf search *aarch64*
@@ -112,6 +112,30 @@ $ aarch64-linux-gnu-gcc -L /usr/aarch64-redhat-linux/sys-root/fc41/lib64 -L /usr
 $ aarch64-linux-gnu-as arsenal/linux/arm64/shcode_hello.s -o shcode_hello.o
 $ aarch64-linux-gnu-ld shcode_hello.o -o shcode_hello
 $ llvm-objcopy -O binary --only-section=.text shcode_hello shcode_hello.bin
+```
+
+To build the ARM64 binaries simply use the following command (ensure that the ARM64 cross-compiler is installed):
+
+```
+$ make arm64x
+```
+
+# How to run
+
+## Linux ARM64
+
+### `shexec`
+
+#### QEMU
+
+```
+$ dnf search *aarch64*
+$ sudo dnf install qemu-system-aarch64
+$ sudo dnf install qemu-system-aarch64-core
+$ sudo dnf install qemu-user-static-aarch64
+```
+
+```
 $ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr shexec shcode_hello.bin
 file size: 52 bytes
 Hello!
@@ -131,22 +155,9 @@ gef➤  target remote localhost:1234
 (remote) gef➤ c
 ```
 
-To build the ARM64 binaries simply use the following command (ensure that the ARM64 cross-compiler is installed):
+#### Native
 
 ```
-$ make arm64x
-```
-
-If you have a Raspberry Pi you can use it with all the debugging tools including `strace` and `gdb`.
-
-# How to use
-
-## Linux ARM64
-
-### `shexec`
-
-```
-$ make arm64
 $ ./build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
 file size: 52 bytes
 Hello!
@@ -179,8 +190,29 @@ exit(0)                                 = ?
 
 ### `shexec`
 
+#### QEMU
+
 ```
-$ make x64
+$ qemu-x86_64 build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+file size: 57 bytes
+Hello, World!
+$ strace qemu-x86_64 build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+...
+mprotect(0x7f6f75e27000, 4096, PROT_READ) = 0
+write(1, "Hello, World!\n\0", 15Hello, World!
+)       = 15
+rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) = 0
+exit_group(0)                           = ?
++++ exited with 0 +++
+$ qemu-x86_64 -g 1234 build/linux/x64/shexec build/linux/x64/shcode_hello.bin &
+gef➤  target remote localhost:1234
+(remote) gef➤ b _start
+(remote) gef➤ c
+```
+
+#### Native
+
+```
 $ ./build/linux/x64/shexec build/linux/x64/shcode_hello.bin
 file size: 57 bytes
 Hello, World!
@@ -211,8 +243,9 @@ exit(0)                                 = ?
 
 ### `shexec.exe`
 
+#### Native
+
 ```
-$ make x64
 $ msfconsole
 msf6 > info payload/windows/x64/shell_bind_tcp
 ...
