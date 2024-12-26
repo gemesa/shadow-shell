@@ -49,13 +49,13 @@ Both POCs are documented in detail on my blog:
 
 ## Shellcode analysis
 
-1. **Emulate the shellcode**  
+1. **Emulate the shellcode**
    Use an emulator like [Qiling](https://github.com/qilingframework/qiling) to analyze the shellcode.
 
-2. **Fallback to `shexec` + `strace`**  
-   If you suspect the shellcode may detect the emulator (and behave differently as a result) switch to using `shexec` with `strace`.
+2. **Fallback to `shexec` + `strace` / `shexec` + `Sysinternals`**
+   If you suspect the shellcode may detect the emulator (and behave differently as a result) switch to using `shexec` with `strace` (Linux) or `shexec` + `Sysinternals` (Windows).
 
-3. **Fallback to eBPF tracing**  
+3. **Fallback to eBPF tracing**
    If the shellcode seems to detect that it is being traced by `strace` use [eBPF tracing](https://github.com/gemesa/sys-scout).
 
 # How to build
