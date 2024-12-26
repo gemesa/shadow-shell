@@ -45,8 +45,6 @@ $(BUILDDIR)/linux/fstat \
 $(BUILDDIR)/linux/x64/shexec \
 $(BUILDDIR)/linux/x64/shcode_hello \
 $(BUILDDIR)/windows/msf-msg.exe \
-$(BUILDDIR)/windows/version.res \
-$(BUILDDIR)/windows/msf-msg-rsrc.exe \
 $(BUILDDIR)/windows/shexec.exe \
 
 cargo-build:
@@ -160,12 +158,6 @@ $(BUILDDIR)/linux/x64/shcode_hello: arsenal/linux/x64/shcode_hello.s
 
 $(BUILDDIR)/windows/msf-msg.exe: lab/windows/shellcode/shc.c
 	x86_64-w64-mingw32-gcc $< -g -o $@
-
-$(BUILDDIR)/windows/version.res: lab/windows/rsrc/version.rc
-	x86_64-w64-mingw32-windres $< -O coff -o $@
-
-$(BUILDDIR)/windows/msf-msg-rsrc.exe: lab/windows/shellcode/shc.c $(BUILDDIR)/windows/version.res
-	x86_64-w64-mingw32-gcc $^ -g -o $@
 
 $(BUILDDIR)/windows/shexec.exe: arsenal/windows/shexec.c
 	x86_64-w64-mingw32-gcc $< -g -o $@
