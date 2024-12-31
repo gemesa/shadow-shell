@@ -162,6 +162,31 @@ gef➤  target remote localhost:1234
 (remote) gef➤ c
 ```
 
+#### `strace` (Docker on arm64 host)
+
+```
+$ sudo docker build --platform=linux/arm64 -t arm64 .
+$ sudo docker run --platform=linux/arm64 --user $(id -u):$(id -g) --rm -it -v "$(pwd)":/workspace arm64 /bin/bash
+$ strace build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
+...
+openat(AT_FDCWD, "build/linux/arm64/shcode_hello.bin", O_RDONLY) = 3
+fstat(3, {st_mode=S_IFREG|0755, st_size=52, ...}) = 0
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}) = 0
+getrandom("\x96\x76\xa8\x10\x42\x3b\x3b\x85", 8, GRND_NONBLOCK) = 8
+brk(NULL)                               = 0x556f3c0000
+brk(0x556f3e1000)                       = 0x556f3e1000
+write(1, "file size: 52 bytes\n", 20file size: 52 bytes
+)   = 20
+mmap(NULL, 52, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f987c6000
+read(3, "\1\251\214\322\201\215\255\362\341-\304\362A\1\340\362\341\217\37\370 \0\200\322\341\3\0\221\342\0\200\322"..., 52) = 52
+close(3)                                = 0
+mprotect(0x7f987c6000, 52, PROT_READ|PROT_WRITE|PROT_EXEC) = 0
+write(1, "Hello!\n", 7Hello!
+)                 = 7
+exit(0)                                 = ?
++++ exited with 0 +++
+```
+
 #### `strace` (native)
 
 ```
@@ -268,6 +293,31 @@ $ qemu-x86_64 -g 1234 build/linux/x64/shexec build/linux/x64/shcode_hello.bin &
 gef➤  target remote localhost:1234
 (remote) gef➤ b _start
 (remote) gef➤ c
+```
+
+#### `strace` (Docker on x64 host)
+
+```
+$ sudo docker build -f Dockerfile-x64 -t x64 .
+$ sudo docker run --user $(id -u):$(id -g) --rm -it -v "$(pwd)":/workspace x64 /bin/bash
+$ strace build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+...
+openat(AT_FDCWD, "build/linux/x64/shcode_hello.bin", O_RDONLY) = 3
+fstat(3, {st_mode=S_IFREG|0755, st_size=57, ...}) = 0
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}) = 0
+getrandom("\x02\xc8\x9f\xe0\xfd\xfa\x65\x34", 8, GRND_NONBLOCK) = 8
+brk(NULL)                               = 0x55d90b4ff000
+brk(0x55d90b520000)                     = 0x55d90b520000
+write(1, "file size: 57 bytes\n", 20file size: 57 bytes
+)   = 20
+mmap(NULL, 57, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f3a41a40000
+read(3, "H\307\300\1\0\0\0H\307\307\1\0\0\0H\2155\25\0\0\0H\307\302\17\0\0\0\17\5H\307"..., 57) = 57
+close(3)                                = 0
+mprotect(0x7f3a41a40000, 57, PROT_READ|PROT_WRITE|PROT_EXEC) = 0
+write(1, "Hello, World!\n\0", 15Hello, World!
+)       = 15
+exit(0)                                 = ?
++++ exited with 0 +++
 ```
 
 #### `strace` (native)
