@@ -12,6 +12,7 @@ The repository contains two main parts:
 
 - **arsenal**: command line tools to support malware analysis
     - `shexec`: a shellcode runner that can be combined with other tools like `strace` (Linux), `ProcMon` and `TCPView` (Windows) to analyze shellcode functionality
+    - `stalk-syscalls.js`: A Frida syscall tracer script that can be used as an alternative to `strace`
 - **lab**: experimental code snippets, some are documented while others are not
 
 :warning: You should **never** execute untrusted shellcode on your system. Use an emulator, hardened VM or container for this purpose.
@@ -22,10 +23,12 @@ arsenal/
 │   ├── arm64/
 │   │   ├── shexec.s: Linux ARM64 shellcode runner
 │   │   ├── shcode_hello.s: Linux ARM64 shellcode that prints "Hello!"
-│   │   └── shcode_shell.s: Linux ARM64 shellcode that opens a shell
+│   │   ├── shcode_shell.s: Linux ARM64 shellcode that opens a shell
+│   │   └── stalk-syscalls.js: Frida ARM64 syscall tracer script
 │   ├── x64/
 │   │   ├── shexec.s: Linux x64 shellcode runner
-│   │   └── shcode_hello.s: Linux x64 shellcode that prints "Hello, World!"
+│   │   ├── shcode_hello.s: Linux x64 shellcode that prints "Hello, World!"
+│   │   └── stalk-syscalls.js: Frida x64 syscall tracer script
 │   └── shexec.c: Linux shellcode runner (used as a reference while implementing shexec.s for different architectures)
 └── windows/
     └── shexec.c: Windows shellcode runner
@@ -34,7 +37,8 @@ arsenal/
 ```
 lab/
 ├── linux/
-│   └── buffer-overflow/: proof of concept for a buffer overflow with the goal of executing shellcode
+│   ├── buffer-overflow/: proof of concept for a buffer overflow with the goal of executing shellcode
+│   └── frida/: experimental Frida scripts
 └── windows/
     └── shellcode/: proof of concept for basic shellcode execution
 ```
@@ -55,8 +59,11 @@ Both POCs are documented in detail on my blog:
 2. **Fallback to `shexec` + `strace` / `shexec` + `Sysinternals`**  
    If you suspect the shellcode may detect the emulator (and behave differently as a result) switch to using `shexec` with `strace` (Linux) or `shexec` + `Sysinternals` (Windows).
 
-3. **Fallback to eBPF tracing**  
-   If the shellcode seems to detect that it is being traced by `strace` use [eBPF tracing](https://github.com/gemesa/sys-scout).
+3. **Fallback to `frida`**  
+   If the shellcode seems to detect tracing by `strace` or `Sysinternals` use `frida`.
+
+4. **Fallback to eBPF tracing (Linux only)**  
+   If the shellcode seems to detect tracing by `frida` use [eBPF tracing](https://github.com/gemesa/sys-scout).
 
 # How to build
 
@@ -126,7 +133,7 @@ $ make arm64x
 
 ### `shexec`
 
-#### QEMU
+#### `strace` (QEMU)
 
 ```
 $ dnf search *aarch64*
@@ -155,7 +162,7 @@ gef➤  target remote localhost:1234
 (remote) gef➤ c
 ```
 
-#### Native
+#### `strace` (native)
 
 ```
 $ ./build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
@@ -186,11 +193,64 @@ write(1, "Hello!\n", 7Hello!
 )                 = 7
 exit(0)                                 = ?
 ```
+
+#### `frida` (native)
+
+```
+$ frida -l arsenal/linux/arm64/stalk-syscalls.js -f build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
+     ____
+    / _  |   Frida 16.5.9 - A world-class dynamic instrumentation toolkit
+   | (_| |
+    > _  |   Commands:
+   /_/ |_|       help      -> Displays the help system
+   . . . .       object?   -> Display information about 'object'
+   . . . .       exit/quit -> Exit
+   . . . .
+   . . . .   More info at https://frida.re/docs/home/
+   . . . .
+   . . . .   Connected to Local System (id=local)
+Spawned `build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin`. Resuming main thread!
+file size: 52 bytes
+syscall @ 0x7f92223ac8, X8: 0xe2 (226)
+[Local::shexec ]-> syscall @ 0x7f922f7024, X8: 0x40 (64)
+Process terminated
+[Local::shexec ]->
+
+Thank you for using Frida!
+```
+
+#### `frida` (Docker on arm64 host)
+
+```
+$ sudo docker build --platform=linux/arm64 -t arm64 .
+$ sudo docker run --platform=linux/arm64 --user $(id -u):$(id -g) --rm -it -v "$(pwd)":/workspace arm64 /bin/bash
+$ frida -l arsenal/linux/arm64/stalk-syscalls.js -f build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
+     ____
+    / _  |   Frida 16.5.9 - A world-class dynamic instrumentation toolkit
+   | (_| |
+    > _  |   Commands:
+   /_/ |_|       help      -> Displays the help system
+   . . . .       object?   -> Display information about 'object'
+   . . . .       exit/quit -> Exit
+   . . . .
+   . . . .   More info at https://frida.re/docs/home/
+   . . . .
+   . . . .   Connected to Local System (id=local)
+Spawned `build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin`. Resuming main thread!
+file size: 52 bytes
+syscall @ 0x7fbe8b7b08, X8: 0xe2 (226)
+[Local::shexec ]-> syscall @ 0x7fbe99b024, X8: 0x40 (64)
+Process terminated
+[Local::shexec ]->
+
+Thank you for using Frida!
+```
+
 ## Linux x64
 
 ### `shexec`
 
-#### QEMU
+#### `strace` (QEMU)
 
 ```
 $ qemu-x86_64 build/linux/x64/shexec build/linux/x64/shcode_hello.bin
@@ -210,7 +270,7 @@ gef➤  target remote localhost:1234
 (remote) gef➤ c
 ```
 
-#### Native
+#### `strace` (native)
 
 ```
 $ ./build/linux/x64/shexec build/linux/x64/shcode_hello.bin
@@ -237,6 +297,54 @@ mprotect(0x7f94405b3000, 57, PROT_READ|PROT_WRITE|PROT_EXEC) = 0
 write(1, "Hello, World!\n\0", 15Hello, World!
 )       = 15
 exit(0)                                 = ?
+```
+
+#### `frida` (native)
+
+```
+$ frida -l arsenal/linux/x64/stalk-syscalls.js -f build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+     ____
+    / _  |   Frida 16.5.9 - A world-class dynamic instrumentation toolkit
+   | (_| |
+    > _  |   Commands:
+   /_/ |_|       help      -> Displays the help system
+   . . . .       object?   -> Display information about 'object'
+   . . . .       exit/quit -> Exit
+   . . . .
+   . . . .   More info at https://frida.re/docs/home/
+   . . . .
+   . . . .   Connected to Local System (id=local)
+Spawned `build/linux/x64/shexec build/linux/x64/shcode_hello.bin`. Resuming main thread!
+file size: 57 bytes
+Hello, World!
+[Local::shexec ]-> syscall @ 0x7f006974e839, RAX: 0xa (10)
+syscall @ 0x7f006800101c, RAX: 0x1 (1)
+syscall @ 0x7f0068001028, RAX: 0x3c (60)
+```
+
+#### `frida` (Docker on x64 host)
+
+```
+$ sudo docker build -f Dockerfile-x64 -t x64 .
+$ sudo docker run --user $(id -u):$(id -g) --rm -it -v "$(pwd)":/workspace x64 /bin/bash
+$ frida -l arsenal/linux/x64/stalk-syscalls.js -f build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+     ____
+    / _  |   Frida 16.5.9 - A world-class dynamic instrumentation toolkit
+   | (_| |
+    > _  |   Commands:
+   /_/ |_|       help      -> Displays the help system
+   . . . .       object?   -> Display information about 'object'
+   . . . .       exit/quit -> Exit
+   . . . .
+   . . . .   More info at https://frida.re/docs/home/
+   . . . .
+   . . . .   Connected to Local System (id=local)
+Spawned `build/linux/x64/shexec build/linux/x64/shcode_hello.bin`. Resuming main thread!
+file size: 57 bytes
+Hello, World!
+syscall @ 0x7fb66cc65c19, RAX: 0xa (10)
+[Local::shexec ]-> syscall @ 0x7fb66cd5301c, RAX: 0x1 (1)
+syscall @ 0x7fb66cd53028, RAX: 0x3c (60)
 ```
 
 ## Windows x64
@@ -305,3 +413,4 @@ Open `ProcMon` and `TCPView` then:
 - https://gist.github.com/luk6xff/9f8d2520530a823944355e59343eadc1
 - https://www.exploit-db.com/exploits/47048
 - https://stackoverflow.com/a/18483795
+- https://learnfrida.info/advanced_usage/#getting-ret-addresses
