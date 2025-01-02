@@ -480,3 +480,4 @@ Open `ProcMon` and `TCPView` then:
 - https://www.exploit-db.com/exploits/47048
 - https://stackoverflow.com/a/18483795
 - https://learnfrida.info/advanced_usage/#getting-ret-addresses
+- https://frida.re/docs/javascript-api/#memory
