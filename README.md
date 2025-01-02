@@ -154,6 +154,11 @@ write(1, "Hello!\n", 7Hello!
 rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) = 0
 exit_group(0)                           = ?
 +++ exited with 0 +++
+```
+
+#### `gdb` (QEMU)
+
+```
 $ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr -g 1234 shexec shcode_hello.bin &
 $ gdb
 gef➤  set architecture aarch64
@@ -297,7 +302,13 @@ write(1, "Hello, World!\n\0", 15Hello, World!
 rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) = 0
 exit_group(0)                           = ?
 +++ exited with 0 +++
+```
+
+#### `gdb` (QEMU)
+
+```
 $ qemu-x86_64 -g 1234 build/linux/x64/shexec build/linux/x64/shcode_hello.bin &
+$ gdb
 gef➤  target remote localhost:1234
 (remote) gef➤ b _start
 (remote) gef➤ c
