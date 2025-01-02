@@ -25,6 +25,16 @@ Interceptor.attach(mprotectAddr, {
 })
 
 function printContext(context) {
-    console.log(`syscall @ ${context.pc}, X8: ${context.x8} (${context.x8.toInt32()})`);
+    switch (context.x8.toInt32()) {
+        case 64:
+            console.log(`syscall @ ${context.pc}, X8: ${context.x8} (${context.x8.toInt32()}) -> write()\n` +
+                `    X0: ${context.x0}\n` +
+                `    X1: ${Memory.readCString(context.x1)}\n` +
+                `    X2: ${context.x2}`);
+            break;
+        default:
+            console.log(`syscall @ ${context.pc}, X8: ${context.x8} (${context.x8.toInt32()})`);
+            break;
+    }
 
 }

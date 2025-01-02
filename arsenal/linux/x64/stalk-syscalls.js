@@ -25,6 +25,16 @@ Interceptor.attach(mprotectAddr, {
 })
 
 function printContext(context) {
-    console.log(`syscall @ ${context.pc}, RAX: ${context.rax} (${context.rax.toInt32()})`);
+    switch (context.rax.toInt32()) {
+        case 1:
+            console.log(`syscall @ ${context.pc}, RAX: ${context.rax} (${context.rax.toInt32()}) -> write()\n` +
+                `    RDI: ${context.rdi}\n` +
+                `    RSI: ${Memory.readCString(context.rsi)}\n` +
+                `    RDX: ${context.rdx}`);
+            break;
+        default:
+            console.log(`syscall @ ${context.pc}, RAX: ${context.rax} (${context.rax.toInt32()})`);
+            break;
+    }
 
 }

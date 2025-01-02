@@ -236,8 +236,12 @@ $ frida -l arsenal/linux/arm64/stalk-syscalls.js -f build/linux/arm64/shexec bui
    . . . .   Connected to Local System (id=local)
 Spawned `build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin`. Resuming main thread!
 file size: 52 bytes
-syscall @ 0x7f92223ac8, X8: 0xe2 (226)
-[Local::shexec ]-> syscall @ 0x7f922f7024, X8: 0x40 (64)
+syscall @ 0x7f94453ac8, X8: 0xe2 (226)
+[Local::shexec ]-> syscall @ 0x7f9452d024, X8: 0x40 (64) -> write()
+    X0: 0x1
+    X1: Hello!
+
+    X2: 0x7
 Process terminated
 [Local::shexec ]->
 
@@ -263,8 +267,12 @@ $ frida -l arsenal/linux/arm64/stalk-syscalls.js -f build/linux/arm64/shexec bui
    . . . .   Connected to Local System (id=local)
 Spawned `build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin`. Resuming main thread!
 file size: 52 bytes
-syscall @ 0x7fbe8b7b08, X8: 0xe2 (226)
-[Local::shexec ]-> syscall @ 0x7fbe99b024, X8: 0x40 (64)
+syscall @ 0x7f9d977b08, X8: 0xe2 (226)
+[Local::shexec ]-> syscall @ 0x7f9da4f024, X8: 0x40 (64) -> write()
+    X0: 0x1
+    X1: Hello!
+
+    X2: 0x7
 Process terminated
 [Local::shexec ]->
 
@@ -367,9 +375,13 @@ $ frida -l arsenal/linux/x64/stalk-syscalls.js -f build/linux/x64/shexec build/l
 Spawned `build/linux/x64/shexec build/linux/x64/shcode_hello.bin`. Resuming main thread!
 file size: 57 bytes
 Hello, World!
-[Local::shexec ]-> syscall @ 0x7f006974e839, RAX: 0xa (10)
-syscall @ 0x7f006800101c, RAX: 0x1 (1)
-syscall @ 0x7f0068001028, RAX: 0x3c (60)
+[Local::shexec ]-> syscall @ 0x7f8cf16e3839, RAX: 0xa (10)
+syscall @ 0x7f8cf001b01c, RAX: 0x1 (1) -> write()
+    RDI: 0x1
+    RSI: Hello, World!
+
+    RDX: 0xf
+syscall @ 0x7f8cf001b028, RAX: 0x3c (60)
 ```
 
 #### `frida` (Docker on x64 host)
@@ -392,9 +404,13 @@ $ frida -l arsenal/linux/x64/stalk-syscalls.js -f build/linux/x64/shexec build/l
 Spawned `build/linux/x64/shexec build/linux/x64/shcode_hello.bin`. Resuming main thread!
 file size: 57 bytes
 Hello, World!
-syscall @ 0x7fb66cc65c19, RAX: 0xa (10)
-[Local::shexec ]-> syscall @ 0x7fb66cd5301c, RAX: 0x1 (1)
-syscall @ 0x7fb66cd53028, RAX: 0x3c (60)
+[Local::shexec ]-> syscall @ 0x7f8c4c216c19, RAX: 0xa (10)
+syscall @ 0x7f8c4c30401c, RAX: 0x1 (1) -> write()
+    RDI: 0x1
+    RSI: Hello, World!
+
+    RDX: 0xf
+syscall @ 0x7f8c4c304028, RAX: 0x3c (60)
 ```
 
 ## Windows x64
