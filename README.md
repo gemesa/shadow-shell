@@ -143,10 +143,10 @@ $ sudo dnf install qemu-user-static-aarch64
 ```
 
 ```
-$ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr shexec shcode_hello.bin
+$ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr build/linux/arm64x/shexec build/linux/arm64x/shcode_hello.bin
 file size: 52 bytes
 Hello!
-$ strace qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr shexec shcode_hello.bin
+$ strace qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr build/linux/arm64x/shexec build/linux/arm64x/shcode_hello.bin
 ...
 mprotect(0x7f4956b7c000, 4096, PROT_READ) = 0
 write(1, "Hello!\n", 7Hello!
@@ -159,7 +159,7 @@ exit_group(0)                           = ?
 #### `gdb` (QEMU)
 
 ```
-$ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr -g 1234 shexec shcode_hello.bin &
+$ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr -g 1234 build/linux/arm64x/shexec build/linux/arm64x/shcode_hello.bin &
 $ gdb
 gef➤  set architecture aarch64
 gef➤  target remote localhost:1234
