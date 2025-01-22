@@ -63,7 +63,7 @@ Both POCs are documented in detail on my blog:
    If the shellcode seems to detect tracing by `strace` or `Sysinternals` use `frida`.
 
 4. **Fallback to eBPF tracing (Linux only)**  
-   If the shellcode seems to detect tracing by `frida` use [eBPF tracing](https://github.com/gemesa/sys-scout).
+   If the shellcode seems to detect tracing by `frida` use [eBPF tracing](https://github.com/gemesa/sys-scout). If you do not want to implement the eBPF probes yourself, you can use tools like [Stratoshark](https://wiki.wireshark.org/Stratoshark).
 
 # How to build
 
