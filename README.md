@@ -291,6 +291,10 @@ Thank you for using Frida!
 #### `strace` (QEMU)
 
 ```
+$ sudo dnf install qemu-user
+```
+
+```
 $ qemu-x86_64 build/linux/x64/shexec build/linux/x64/shcode_hello.bin
 file size: 57 bytes
 Hello, World!
