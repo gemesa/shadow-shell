@@ -9,7 +9,7 @@ newline:
 
 _start:
     mov r12, [rsp]			# argc
-    lea r13, [rsp + 8]		# agrv[0]
+    lea r13, [rsp + 8]		# argv[0]
 
 
 print_args:
