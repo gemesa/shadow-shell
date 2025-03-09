@@ -18,4 +18,4 @@ jobs:
           --rm \
           -v "${{ github.workspace }}":/workspace \
           gemesa/arm64x:latest \
-          make arm64x
+          bash -c "make arm64x && make arm64x-lab"

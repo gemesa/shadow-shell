@@ -7,21 +7,32 @@ $(shell mkdir -p $(BUILDDIR)/linux/arm64)
 $(shell mkdir -p $(BUILDDIR)/linux/arm64x)
 $(shell mkdir -p $(BUILDDIR)/windows)
 
-.PHONY: arm64 arm64x x64 clean cargo-build
+.PHONY: arm64 arm64-lab arm64x arm64x-lab x64 x64-lab clean cargo-build
 
 arm64: \
 $(BUILDDIR)/linux/arm64/shexec \
-$(BUILDDIR)/linux/arm64/nocrt-hello \
 $(BUILDDIR)/linux/arm64/shcode-hello \
 $(BUILDDIR)/linux/arm64/shcode-shell
 
+arm64-lab: \
+$(BUILDDIR)/linux/arm64/nocrt-hello
+
 arm64x: \
 $(BUILDDIR)/linux/arm64x/shexec \
-$(BUILDDIR)/linux/arm64x/nocrt-hello \
 $(BUILDDIR)/linux/arm64x/shcode-hello \
 $(BUILDDIR)/linux/arm64x/shcode-shell
 
+arm64x-lab: \
+$(BUILDDIR)/linux/arm64x/nocrt-hello
+
 x64: \
+$(BUILDDIR)/linux/x64/shexec \
+$(BUILDDIR)/linux/x64/shcode-hello \
+$(BUILDDIR)/linux/x64/shcode-shell \
+$(BUILDDIR)/windows/shexec.exe \
+$(BUILDDIR)/windows/msf-msg.exe
+
+x64-lab: \
 cargo-build \
 $(BUILDDIR)/linux/x64/crt-hello \
 $(BUILDDIR)/linux/x64/crt-stack \
@@ -41,12 +52,7 @@ $(BUILDDIR)/linux/bof-server-no-pie2 \
 $(BUILDDIR)/linux/bof-server-pie2 \
 $(BUILDDIR)/linux/dyn \
 $(BUILDDIR)/linux/dyn2 \
-$(BUILDDIR)/linux/fstat \
-$(BUILDDIR)/linux/x64/shexec \
-$(BUILDDIR)/linux/x64/shcode-hello \
-$(BUILDDIR)/linux/x64/shcode-shell \
-$(BUILDDIR)/windows/msf-msg.exe \
-$(BUILDDIR)/windows/shexec.exe
+$(BUILDDIR)/linux/fstat
 
 cargo-build:
 	cargo build --target x86_64-pc-windows-gnu --manifest-path lab/windows/shellcode/shc/Cargo.toml
