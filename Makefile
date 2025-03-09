@@ -12,14 +12,14 @@ $(shell mkdir -p $(BUILDDIR)/windows)
 arm64: \
 $(BUILDDIR)/linux/arm64/shexec \
 $(BUILDDIR)/linux/arm64/nocrt-hello \
-$(BUILDDIR)/linux/arm64/shcode_hello \
-$(BUILDDIR)/linux/arm64/shcode_shell
+$(BUILDDIR)/linux/arm64/shcode-hello \
+$(BUILDDIR)/linux/arm64/shcode-shell
 
 arm64x: \
 $(BUILDDIR)/linux/arm64x/shexec \
 $(BUILDDIR)/linux/arm64x/nocrt-hello \
-$(BUILDDIR)/linux/arm64x/shcode_hello \
-$(BUILDDIR)/linux/arm64x/shcode_shell
+$(BUILDDIR)/linux/arm64x/shcode-hello \
+$(BUILDDIR)/linux/arm64x/shcode-shell
 
 x64: \
 cargo-build \
@@ -43,7 +43,7 @@ $(BUILDDIR)/linux/dyn \
 $(BUILDDIR)/linux/dyn2 \
 $(BUILDDIR)/linux/fstat \
 $(BUILDDIR)/linux/x64/shexec \
-$(BUILDDIR)/linux/x64/shcode_hello \
+$(BUILDDIR)/linux/x64/shcode-hello \
 $(BUILDDIR)/windows/msf-msg.exe \
 $(BUILDDIR)/windows/shexec.exe
 
@@ -58,15 +58,15 @@ $(BUILDDIR)/linux/arm64/nocrt-hello: lab/linux/asm-hive/arm64/nocrt-hello.s
 	as $< -g -o $(BUILDDIR)/linux/arm64/nocrt-hello.o
 	ld $(BUILDDIR)/linux/arm64/nocrt-hello.o -g -o $@
 
-$(BUILDDIR)/linux/arm64/shcode_hello: arsenal/linux/arm64/shcode_hello.s
-	as $< -g -o $(BUILDDIR)/linux/arm64/shcode_hello.o
-	ld $(BUILDDIR)/linux/arm64/shcode_hello.o -g -o $@
-	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode_hello.bin
+$(BUILDDIR)/linux/arm64/shcode-hello: arsenal/linux/arm64/shcode-hello.s
+	as $< -g -o $(BUILDDIR)/linux/arm64/shcode-hello.o
+	ld $(BUILDDIR)/linux/arm64/shcode-hello.o -g -o $@
+	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode-hello.bin
 
-$(BUILDDIR)/linux/arm64/shcode_shell: arsenal/linux/arm64/shcode_shell.s
-	as $< -g -o $(BUILDDIR)/linux/arm64/shcode_shell.o
-	ld $(BUILDDIR)/linux/arm64/shcode_shell.o -g -o $@
-	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode_shell.bin
+$(BUILDDIR)/linux/arm64/shcode-shell: arsenal/linux/arm64/shcode-shell.s
+	as $< -g -o $(BUILDDIR)/linux/arm64/shcode-shell.o
+	ld $(BUILDDIR)/linux/arm64/shcode-shell.o -g -o $@
+	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64/shcode-shell.bin
 
 $(BUILDDIR)/linux/arm64x/shexec: arsenal/linux/arm64/shexec.s
 	aarch64-linux-gnu-gcc $< -g -o $@ -pie -L /usr/aarch64-redhat-linux/sys-root/fc41/lib64 -L /usr/aarch64-redhat-linux/sys-root/fc41/lib --sysroot=/usr/aarch64-redhat-linux/sys-root/fc41
@@ -75,15 +75,15 @@ $(BUILDDIR)/linux/arm64x/nocrt-hello: lab/linux/asm-hive/arm64/nocrt-hello.s
 	aarch64-linux-gnu-as $< -g -o $(BUILDDIR)/linux/arm64x/nocrt-hello.o
 	aarch64-linux-gnu-ld $(BUILDDIR)/linux/arm64x/nocrt-hello.o -g -o $@
 
-$(BUILDDIR)/linux/arm64x/shcode_hello: arsenal/linux/arm64/shcode_hello.s
-	aarch64-linux-gnu-as $< -g -o $(BUILDDIR)/linux/arm64x/shcode_hello.o
-	aarch64-linux-gnu-ld $(BUILDDIR)/linux/arm64x/shcode_hello.o -g -o $@
-	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64x/shcode_hello.bin
+$(BUILDDIR)/linux/arm64x/shcode-hello: arsenal/linux/arm64/shcode-hello.s
+	aarch64-linux-gnu-as $< -g -o $(BUILDDIR)/linux/arm64x/shcode-hello.o
+	aarch64-linux-gnu-ld $(BUILDDIR)/linux/arm64x/shcode-hello.o -g -o $@
+	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64x/shcode-hello.bin
 
-$(BUILDDIR)/linux/arm64x/shcode_shell: arsenal/linux/arm64/shcode_shell.s
-	aarch64-linux-gnu-as $< -g -o $(BUILDDIR)/linux/arm64x/shcode_shell.o
-	aarch64-linux-gnu-ld $(BUILDDIR)/linux/arm64x/shcode_shell.o -g -o $@
-	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64x/shcode_shell.bin
+$(BUILDDIR)/linux/arm64x/shcode-shell: arsenal/linux/arm64/shcode-shell.s
+	aarch64-linux-gnu-as $< -g -o $(BUILDDIR)/linux/arm64x/shcode-shell.o
+	aarch64-linux-gnu-ld $(BUILDDIR)/linux/arm64x/shcode-shell.o -g -o $@
+	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/arm64x/shcode-shell.bin
 
 $(BUILDDIR)/linux/x64/crt-hello: lab/linux/asm-hive/x64/crt-hello.s
 	gcc $< -fPIE -pie -g -o $@
@@ -151,10 +151,10 @@ $(BUILDDIR)/linux/fstat: lab/linux/util/fstat.c
 $(BUILDDIR)/linux/x64/shexec: arsenal/linux/x64/shexec.s
 	gcc $< -g -o $@ -pie
 
-$(BUILDDIR)/linux/x64/shcode_hello: arsenal/linux/x64/shcode_hello.s
-	as $< -g -o $(BUILDDIR)/linux/x64/shcode_hello.o
-	ld $(BUILDDIR)/linux/x64/shcode_hello.o -g -o $@
-	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/x64/shcode_hello.bin
+$(BUILDDIR)/linux/x64/shcode-hello: arsenal/linux/x64/shcode-hello.s
+	as $< -g -o $(BUILDDIR)/linux/x64/shcode-hello.o
+	ld $(BUILDDIR)/linux/x64/shcode-hello.o -g -o $@
+	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/x64/shcode-hello.bin
 
 $(BUILDDIR)/windows/msf-msg.exe: lab/windows/shellcode/shc.c
 	x86_64-w64-mingw32-gcc $< -g -o $@
