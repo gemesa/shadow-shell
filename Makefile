@@ -44,6 +44,7 @@ $(BUILDDIR)/linux/dyn2 \
 $(BUILDDIR)/linux/fstat \
 $(BUILDDIR)/linux/x64/shexec \
 $(BUILDDIR)/linux/x64/shcode-hello \
+$(BUILDDIR)/linux/x64/shcode-shell \
 $(BUILDDIR)/windows/msf-msg.exe \
 $(BUILDDIR)/windows/shexec.exe
 
@@ -155,6 +156,11 @@ $(BUILDDIR)/linux/x64/shcode-hello: arsenal/linux/x64/shcode-hello.s
 	as $< -g -o $(BUILDDIR)/linux/x64/shcode-hello.o
 	ld $(BUILDDIR)/linux/x64/shcode-hello.o -g -o $@
 	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/x64/shcode-hello.bin
+
+$(BUILDDIR)/linux/x64/shcode-shell: arsenal/linux/x64/shcode-shell.s
+	as $< -g -o $(BUILDDIR)/linux/x64/shcode-shell.o
+	ld $(BUILDDIR)/linux/x64/shcode-shell.o -g -o $@
+	llvm-objcopy -O binary --only-section=.text $@ $(BUILDDIR)/linux/x64/shcode-shell.bin
 
 $(BUILDDIR)/windows/msf-msg.exe: lab/windows/shellcode/shc.c
 	x86_64-w64-mingw32-gcc $< -g -o $@
