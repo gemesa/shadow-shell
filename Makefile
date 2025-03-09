@@ -13,13 +13,13 @@ arm64: \
 $(BUILDDIR)/linux/arm64/shexec \
 $(BUILDDIR)/linux/arm64/nocrt-hello \
 $(BUILDDIR)/linux/arm64/shcode_hello \
-$(BUILDDIR)/linux/arm64/shcode_shell \
+$(BUILDDIR)/linux/arm64/shcode_shell
 
 arm64x: \
 $(BUILDDIR)/linux/arm64x/shexec \
 $(BUILDDIR)/linux/arm64x/nocrt-hello \
 $(BUILDDIR)/linux/arm64x/shcode_hello \
-$(BUILDDIR)/linux/arm64x/shcode_shell \
+$(BUILDDIR)/linux/arm64x/shcode_shell
 
 x64: \
 cargo-build \
@@ -45,7 +45,7 @@ $(BUILDDIR)/linux/fstat \
 $(BUILDDIR)/linux/x64/shexec \
 $(BUILDDIR)/linux/x64/shcode_hello \
 $(BUILDDIR)/windows/msf-msg.exe \
-$(BUILDDIR)/windows/shexec.exe \
+$(BUILDDIR)/windows/shexec.exe
 
 cargo-build:
 	cargo build --target x86_64-pc-windows-gnu --manifest-path lab/windows/shellcode/shc/Cargo.toml
