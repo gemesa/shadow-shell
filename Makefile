@@ -7,7 +7,7 @@ $(shell mkdir -p $(BUILDDIR)/linux/arm64)
 $(shell mkdir -p $(BUILDDIR)/linux/arm64x)
 $(shell mkdir -p $(BUILDDIR)/windows)
 
-.PHONY: arm64 arm64-lab arm64x arm64x-lab x64 x64-lab clean cargo-build
+.PHONY: arm64 arm64-lab arm64x arm64x-lab x64 x64-lab clean cargo-build install-arm64 install-arm64x install-x64 uninstall
 
 arm64: \
 $(BUILDDIR)/linux/arm64/shexec \
@@ -57,6 +57,18 @@ $(BUILDDIR)/linux/fstat
 cargo-build:
 	cargo build --target x86_64-pc-windows-gnu --manifest-path lab/windows/shellcode/shc/Cargo.toml
 	cargo build --target x86_64-unknown-linux-gnu --manifest-path lab/linux/frida/Cargo.toml
+
+install-arm64:
+	cp $(BUILDDIR)/linux/arm64/shexec /usr/local/bin/
+
+install-arm64x:
+	cp $(BUILDDIR)/linux/arm64x/shexec /usr/local/bin/
+
+install-x64:
+	cp $(BUILDDIR)/linux/x64/shexec /usr/local/bin/
+
+uninstall:
+	rm /usr/local/bin/shexec
 
 $(BUILDDIR)/linux/arm64/shexec: arsenal/linux/arm64/shexec.s
 	gcc $< -g -o $@ -pie
