@@ -28,6 +28,7 @@ arsenal/
 │   ├── x64/
 │   │   ├── shexec.s: Linux x64 shellcode runner
 │   │   ├── shcode-hello.s: Linux x64 shellcode that prints "Hello, World!"
+│   │   ├── shcode-shell.s: Linux x64 shellcode that opens a shell
 │   │   └── stalk-syscalls.js: Frida x64 syscall tracer script
 │   └── shexec.c: Linux shellcode runner (used as a reference while implementing shexec.s for different architectures)
 └── windows/
