@@ -22,12 +22,12 @@ arsenal/
 ├── linux/
 │   ├── arm64/
 │   │   ├── shexec.s: Linux ARM64 shellcode runner
-│   │   ├── shcode_hello.s: Linux ARM64 shellcode that prints "Hello!"
-│   │   ├── shcode_shell.s: Linux ARM64 shellcode that opens a shell
+│   │   ├── shcode-hello.s: Linux ARM64 shellcode that prints "Hello!"
+│   │   ├── shcode-shell.s: Linux ARM64 shellcode that opens a shell
 │   │   └── stalk-syscalls.js: Frida ARM64 syscall tracer script
 │   ├── x64/
 │   │   ├── shexec.s: Linux x64 shellcode runner
-│   │   ├── shcode_hello.s: Linux x64 shellcode that prints "Hello, World!"
+│   │   ├── shcode-hello.s: Linux x64 shellcode that prints "Hello, World!"
 │   │   └── stalk-syscalls.js: Frida x64 syscall tracer script
 │   └── shexec.c: Linux shellcode runner (used as a reference while implementing shexec.s for different architectures)
 └── windows/
@@ -116,9 +116,9 @@ Quick guide:
 
 ```
 $ aarch64-linux-gnu-gcc -L /usr/aarch64-redhat-linux/sys-root/fc41/lib64 -L /usr/aarch64-redhat-linux/sys-root/fc41/lib --sysroot=/usr/aarch64-redhat-linux/sys-root/fc41 arsenal/linux/arm64/shexec.s -o shexec
-$ aarch64-linux-gnu-as arsenal/linux/arm64/shcode_hello.s -o shcode_hello.o
-$ aarch64-linux-gnu-ld shcode_hello.o -o shcode_hello
-$ llvm-objcopy -O binary --only-section=.text shcode_hello shcode_hello.bin
+$ aarch64-linux-gnu-as arsenal/linux/arm64/shcode-hello.s -o shcode-hello.o
+$ aarch64-linux-gnu-ld shcode-hello.o -o shcode-hello
+$ llvm-objcopy -O binary --only-section=.text shcode-hello shcode-hello.bin
 ```
 
 To build the ARM64 binaries simply use the following command (ensure that the ARM64 cross-compiler is installed):
@@ -143,10 +143,10 @@ $ sudo dnf install qemu-user-static-aarch64
 ```
 
 ```
-$ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr build/linux/arm64x/shexec build/linux/arm64x/shcode_hello.bin
+$ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr build/linux/arm64x/shexec build/linux/arm64x/shcode-hello.bin
 file size: 52 bytes
 Hello!
-$ strace qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr build/linux/arm64x/shexec build/linux/arm64x/shcode_hello.bin
+$ strace qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr build/linux/arm64x/shexec build/linux/arm64x/shcode-hello.bin
 ...
 mprotect(0x7f4956b7c000, 4096, PROT_READ) = 0
 write(1, "Hello!\n", 7Hello!
@@ -159,7 +159,7 @@ exit_group(0)                           = ?
 #### `gdb` (QEMU)
 
 ```
-$ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr -g 1234 build/linux/arm64x/shexec build/linux/arm64x/shcode_hello.bin &
+$ qemu-aarch64 -L /usr/aarch64-redhat-linux/sys-root/fc41/usr -g 1234 build/linux/arm64x/shexec build/linux/arm64x/shcode-hello.bin &
 $ gdb
 gef➤  set architecture aarch64
 gef➤  target remote localhost:1234
@@ -172,9 +172,9 @@ gef➤  target remote localhost:1234
 ```
 $ sudo docker build --platform=linux/arm64 -t arm64 .
 $ sudo docker run --platform=linux/arm64 --user $(id -u):$(id -g) --rm -it -v "$(pwd)":/workspace arm64 /bin/bash
-$ strace build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
+$ strace build/linux/arm64/shexec build/linux/arm64/shcode-hello.bin
 ...
-openat(AT_FDCWD, "build/linux/arm64/shcode_hello.bin", O_RDONLY) = 3
+openat(AT_FDCWD, "build/linux/arm64/shcode-hello.bin", O_RDONLY) = 3
 fstat(3, {st_mode=S_IFREG|0755, st_size=52, ...}) = 0
 fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}) = 0
 getrandom("\x96\x76\xa8\x10\x42\x3b\x3b\x85", 8, GRND_NONBLOCK) = 8
@@ -195,19 +195,19 @@ exit(0)                                 = ?
 #### `strace` (native)
 
 ```
-$ ./build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
+$ ./build/linux/arm64/shexec build/linux/arm64/shcode-hello.bin
 file size: 52 bytes
 Hello!
 $ echo $$
 1918
-$ ./build/linux/arm64/shexec build/linux/arm64/shcode_shell.bin
+$ ./build/linux/arm64/shexec build/linux/arm64/shcode-shell.bin
 file size: 40 bytes
 $ echo $$
 19341
 $ exit
-$ strace ./build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
+$ strace ./build/linux/arm64/shexec build/linux/arm64/shcode-hello.bin
 ...
-openat(AT_FDCWD, "build/linux/arm64/shcode_hello.bin", O_RDONLY) = 3
+openat(AT_FDCWD, "build/linux/arm64/shcode-hello.bin", O_RDONLY) = 3
 newfstatat(3, "", {st_mode=S_IFREG|0755, st_size=52, ...}, AT_EMPTY_PATH) = 0
 newfstatat(1, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}, AT_EMPTY_PATH) = 0
 getrandom("\x20\xc3\xbe\x6a\x9d\x68\x76\xf9", 8, GRND_NONBLOCK) = 8
@@ -227,7 +227,7 @@ exit(0)                                 = ?
 #### `frida` (native)
 
 ```
-$ frida -l arsenal/linux/arm64/stalk-syscalls.js -f build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
+$ frida -l arsenal/linux/arm64/stalk-syscalls.js -f build/linux/arm64/shexec build/linux/arm64/shcode-hello.bin
      ____
     / _  |   Frida 16.5.9 - A world-class dynamic instrumentation toolkit
    | (_| |
@@ -239,7 +239,7 @@ $ frida -l arsenal/linux/arm64/stalk-syscalls.js -f build/linux/arm64/shexec bui
    . . . .   More info at https://frida.re/docs/home/
    . . . .
    . . . .   Connected to Local System (id=local)
-Spawned `build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin`. Resuming main thread!
+Spawned `build/linux/arm64/shexec build/linux/arm64/shcode-hello.bin`. Resuming main thread!
 file size: 52 bytes
 syscall @ 0x7f94453ac8, X8: 0xe2 (226)
 [Local::shexec ]-> syscall @ 0x7f9452d024, X8: 0x40 (64) -> write()
@@ -258,7 +258,7 @@ Thank you for using Frida!
 ```
 $ sudo docker build --platform=linux/arm64 -t arm64 .
 $ sudo docker run --platform=linux/arm64 --user $(id -u):$(id -g) --rm -it -v "$(pwd)":/workspace arm64 /bin/bash
-$ frida -l arsenal/linux/arm64/stalk-syscalls.js -f build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin
+$ frida -l arsenal/linux/arm64/stalk-syscalls.js -f build/linux/arm64/shexec build/linux/arm64/shcode-hello.bin
      ____
     / _  |   Frida 16.5.9 - A world-class dynamic instrumentation toolkit
    | (_| |
@@ -270,7 +270,7 @@ $ frida -l arsenal/linux/arm64/stalk-syscalls.js -f build/linux/arm64/shexec bui
    . . . .   More info at https://frida.re/docs/home/
    . . . .
    . . . .   Connected to Local System (id=local)
-Spawned `build/linux/arm64/shexec build/linux/arm64/shcode_hello.bin`. Resuming main thread!
+Spawned `build/linux/arm64/shexec build/linux/arm64/shcode-hello.bin`. Resuming main thread!
 file size: 52 bytes
 syscall @ 0x7f9d977b08, X8: 0xe2 (226)
 [Local::shexec ]-> syscall @ 0x7f9da4f024, X8: 0x40 (64) -> write()
@@ -295,10 +295,10 @@ $ sudo dnf install qemu-user
 ```
 
 ```
-$ qemu-x86_64 build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+$ qemu-x86_64 build/linux/x64/shexec build/linux/x64/shcode-hello.bin
 file size: 57 bytes
 Hello, World!
-$ strace qemu-x86_64 build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+$ strace qemu-x86_64 build/linux/x64/shexec build/linux/x64/shcode-hello.bin
 ...
 mprotect(0x7f6f75e27000, 4096, PROT_READ) = 0
 write(1, "Hello, World!\n\0", 15Hello, World!
@@ -311,7 +311,7 @@ exit_group(0)                           = ?
 #### `gdb` (QEMU)
 
 ```
-$ qemu-x86_64 -g 1234 build/linux/x64/shexec build/linux/x64/shcode_hello.bin &
+$ qemu-x86_64 -g 1234 build/linux/x64/shexec build/linux/x64/shcode-hello.bin &
 $ gdb
 gef➤  target remote localhost:1234
 (remote) gef➤ b _start
@@ -323,9 +323,9 @@ gef➤  target remote localhost:1234
 ```
 $ sudo docker build -f Dockerfile-x64 -t x64 .
 $ sudo docker run --user $(id -u):$(id -g) --rm -it -v "$(pwd)":/workspace x64 /bin/bash
-$ strace build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+$ strace build/linux/x64/shexec build/linux/x64/shcode-hello.bin
 ...
-openat(AT_FDCWD, "build/linux/x64/shcode_hello.bin", O_RDONLY) = 3
+openat(AT_FDCWD, "build/linux/x64/shcode-hello.bin", O_RDONLY) = 3
 fstat(3, {st_mode=S_IFREG|0755, st_size=57, ...}) = 0
 fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}) = 0
 getrandom("\x02\xc8\x9f\xe0\xfd\xfa\x65\x34", 8, GRND_NONBLOCK) = 8
@@ -346,16 +346,16 @@ exit(0)                                 = ?
 #### `strace` (native)
 
 ```
-$ ./build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+$ ./build/linux/x64/shexec build/linux/x64/shcode-hello.bin
 file size: 57 bytes
 Hello, World!
 $ msfvenom -p linux/x64/exec CMD='echo \"Hello, World!\"' -f raw -o shellcode.bin
 $ ./build/linux/x64/shexec shellcode.bin
 file size: 57 bytes
 Hello, World!
-$ strace ./build/linux/x64/shexec build/linux/x64/shcode_hello.bin 
+$ strace ./build/linux/x64/shexec build/linux/x64/shcode-hello.bin 
 ...
-openat(AT_FDCWD, "build/linux/x64/shcode_hello.bin", O_RDONLY) = 3
+openat(AT_FDCWD, "build/linux/x64/shcode-hello.bin", O_RDONLY) = 3
 fstat(3, {st_mode=S_IFREG|0755, st_size=57, ...}) = 0
 fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}) = 0
 getrandom("\xae\x28\x5d\xfd\xd1\xae\x82\x68", 8, GRND_NONBLOCK) = 8
@@ -375,7 +375,7 @@ exit(0)                                 = ?
 #### `frida` (native)
 
 ```
-$ frida -l arsenal/linux/x64/stalk-syscalls.js -f build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+$ frida -l arsenal/linux/x64/stalk-syscalls.js -f build/linux/x64/shexec build/linux/x64/shcode-hello.bin
      ____
     / _  |   Frida 16.5.9 - A world-class dynamic instrumentation toolkit
    | (_| |
@@ -387,7 +387,7 @@ $ frida -l arsenal/linux/x64/stalk-syscalls.js -f build/linux/x64/shexec build/l
    . . . .   More info at https://frida.re/docs/home/
    . . . .
    . . . .   Connected to Local System (id=local)
-Spawned `build/linux/x64/shexec build/linux/x64/shcode_hello.bin`. Resuming main thread!
+Spawned `build/linux/x64/shexec build/linux/x64/shcode-hello.bin`. Resuming main thread!
 file size: 57 bytes
 Hello, World!
 [Local::shexec ]-> syscall @ 0x7f8cf16e3839, RAX: 0xa (10)
@@ -404,7 +404,7 @@ syscall @ 0x7f8cf001b028, RAX: 0x3c (60)
 ```
 $ sudo docker build -f Dockerfile-x64 -t x64 .
 $ sudo docker run --user $(id -u):$(id -g) --rm -it -v "$(pwd)":/workspace x64 /bin/bash
-$ frida -l arsenal/linux/x64/stalk-syscalls.js -f build/linux/x64/shexec build/linux/x64/shcode_hello.bin
+$ frida -l arsenal/linux/x64/stalk-syscalls.js -f build/linux/x64/shexec build/linux/x64/shcode-hello.bin
      ____
     / _  |   Frida 16.5.9 - A world-class dynamic instrumentation toolkit
    | (_| |
@@ -416,7 +416,7 @@ $ frida -l arsenal/linux/x64/stalk-syscalls.js -f build/linux/x64/shexec build/l
    . . . .   More info at https://frida.re/docs/home/
    . . . .
    . . . .   Connected to Local System (id=local)
-Spawned `build/linux/x64/shexec build/linux/x64/shcode_hello.bin`. Resuming main thread!
+Spawned `build/linux/x64/shexec build/linux/x64/shcode-hello.bin`. Resuming main thread!
 file size: 57 bytes
 Hello, World!
 [Local::shexec ]-> syscall @ 0x7f8c4c216c19, RAX: 0xa (10)
