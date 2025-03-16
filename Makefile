@@ -37,7 +37,6 @@ cargo-build \
 $(BUILDDIR)/linux/x64/crt-hello \
 $(BUILDDIR)/linux/x64/crt-stack \
 $(BUILDDIR)/linux/x64/nocrt-hello \
-$(BUILDDIR)/linux/x64/nocrt-hello-nasm \
 $(BUILDDIR)/linux/x64/nocrt-jmp-func \
 $(BUILDDIR)/linux/x64/nocrt-call-func \
 $(BUILDDIR)/linux/x64/nocrt-rep \
@@ -113,10 +112,6 @@ $(BUILDDIR)/linux/x64/crt-stack: lab/linux/asm-hive/x64/crt-stack.s
 $(BUILDDIR)/linux/x64/nocrt-hello: lab/linux/asm-hive/x64/nocrt-hello.s
 	as $< -g -o $(BUILDDIR)/linux/x64/nocrt-hello.o
 	ld $(BUILDDIR)/linux/x64/nocrt-hello.o -g -o $@
-
-$(BUILDDIR)/linux/x64/nocrt-hello-nasm: lab/linux/asm-hive/x64/nocrt-hello-nasm.s
-	nasm -f elf64 $< -g -o $(BUILDDIR)/linux/x64/nocrt-hello-nasm.o
-	ld $(BUILDDIR)/linux/x64/nocrt-hello-nasm.o -g -o $@
 
 $(BUILDDIR)/linux/x64/nocrt-jmp-func: lab/linux/asm-hive/x64/nocrt-jmp-func.s
 	as $< -g -o $(BUILDDIR)/linux/x64/nocrt-jmp-func.o
