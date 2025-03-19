@@ -292,6 +292,7 @@ Thank you for using Frida!
 
 ```
 $ sudo dnf install qemu-user
+$ sudo dnf install qemu-user-static
 ```
 
 ```
