@@ -106,9 +106,6 @@ Alternatively an ARM64 cross-compiler could also be used.
 $ dnf search *aarch64*
 $ sudo dnf install gcc-aarch64-linux-gnu
 $ sudo dnf install binutils-aarch64-linux-gnu
-$ sudo dnf install qemu-system-aarch64
-$ sudo dnf install qemu-system-aarch64-core
-$ sudo dnf install qemu-user-static-aarch64
 $ sudo dnf install sysroot-aarch64-fc41-glibc
 ```
 
@@ -136,6 +133,8 @@ $ make arm64x
 #### `strace` (QEMU)
 
 ```
+$ sudo dnf install qemu-user
+$ sudo dnf install qemu-user-static
 $ dnf search *aarch64*
 $ sudo dnf install qemu-system-aarch64
 $ sudo dnf install qemu-system-aarch64-core
