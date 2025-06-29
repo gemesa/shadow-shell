@@ -3,7 +3,6 @@
 shadow-shell is a cyber lab designed for:
 
 - analyzing shellcode
-- exploring memory exploits
 - supporting malware analysis
 
 # Repository structure
@@ -38,17 +37,13 @@ arsenal/
 ```
 lab/
 ├── linux/
-│   ├── buffer-overflow/: proof of concept for a buffer overflow with the goal of executing shellcode
 │   └── frida/: experimental Frida scripts
 └── windows/
     └── shellcode/: proof of concept for basic shellcode execution
 ```
-Both POCs are documented in detail on my blog:
+The POC is documented in detail on my blog:
 
 - https://shadowshell.io/diving-into-shellcodes
-- https://shadowshell.io/shattering-the-stack-0
-- https://shadowshell.io/shattering-the-stack-1
-- https://shadowshell.io/shattering-the-stack-2
 
 # Workflow
 

@@ -45,10 +45,6 @@ $(BUILDDIR)/linux/x64/crt-cmp \
 $(BUILDDIR)/linux/x64/crt-loop \
 $(BUILDDIR)/linux/x64/crt-lea-array \
 $(BUILDDIR)/linux/x64/crt-args \
-$(BUILDDIR)/linux/bof-server-no-pie \
-$(BUILDDIR)/linux/bof-server-pie \
-$(BUILDDIR)/linux/bof-server-no-pie2 \
-$(BUILDDIR)/linux/bof-server-pie2 \
 $(BUILDDIR)/linux/dyn \
 $(BUILDDIR)/linux/dyn2 \
 $(BUILDDIR)/linux/fstat
@@ -140,18 +136,6 @@ $(BUILDDIR)/linux/x64/crt-lea-array: lab/linux/asm-hive/x64/crt-lea-array.s
 
 $(BUILDDIR)/linux/x64/crt-args: lab/linux/asm-hive/x64/crt-args.s
 	gcc $< -g -o $@
-
-$(BUILDDIR)/linux/bof-server-no-pie: lab/linux/buffer-overflow/bof-server.c
-	gcc $< -g -o $@
-
-$(BUILDDIR)/linux/bof-server-pie: lab/linux/buffer-overflow/bof-server.c
-	gcc $< -g -fPIE -pie -o $@
-
-$(BUILDDIR)/linux/bof-server-no-pie2: lab/linux/buffer-overflow/bof-server2.c
-	gcc $< -g -o $@ -fno-stack-protector -z execstack
-
-$(BUILDDIR)/linux/bof-server-pie2: lab/linux/buffer-overflow/bof-server2.c
-	gcc $< -g -fPIE -pie -o $@ -fno-stack-protector -z execstack
 
 $(BUILDDIR)/linux/dyn: lab/linux/frida/dyn.c
 	gcc $< -g -o $@
